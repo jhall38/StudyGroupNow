@@ -1,3 +1,4 @@
+/* google map */
 var myCenter=new google.maps.LatLng(51.508742,-0.120850);
 
 function initialize()
@@ -18,3 +19,13 @@ marker.setMap(map);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+/* end map */
+
+/* search page */
+$(document).ready(function(){
+    $(".toggle-info").click(function(){
+        $(".search-info").slideToggle();
+    });
+});
+

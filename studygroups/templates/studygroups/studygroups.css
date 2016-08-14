@@ -1,40 +1,24 @@
 /* Style sheet rules */
 
-/* Helpful notes:
-
-UW theme color codes:
-Purple = #4b2e83
-Gold = #b7a57a
-*/
-
-/* Navigation bar 
-.navbar-inverse {
-    background-color: #4b2e83;
+/* search page */
+#googleMap {
+    margin-top: 40px;
 }
 
-.navbar-brand {
-    color: #ffffff !important; 
-    font-size: 26px;
+.searchbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
-#myNavbar a {
-    color: #ffffff;
+.searchbar li {
+    display: inline;
 }
 
-.navbar-toggle {
-    border-color: #ffffff !important;
+.search-info {
+    display:none;
 }
 
-.navbar-toggle:hover {
-    background-color: transparent !important;
-    opacity: 0.5;
-}
-
-a:hover {
-    color:#b7a57a !important;
-    text-decoration: none;
-}
-*/
 .grey-box {
     background-color: #CCCCCC;
     text-align: center;
@@ -42,13 +26,12 @@ a:hover {
 
 .white-box {
     text-align: center;
+    height: 80px;
 }
 
 /* login page */
 .login-main-image {
     height: 400px;
-/*    background-image: url('../images/suzallo.jpg');
-    background-size: cover;*/
 }
 
 .login-wrapper {
@@ -126,7 +109,13 @@ a:hover {
     }
 
     .grey-box {
+        margin-top: 70px;
         width: 300px;
+    }
+
+    .search-input {
+        width: 570px;
+        float: left;
     }
 }
 
@@ -137,4 +126,12 @@ a:hover {
         height: 700px;
     }
 
+    .search-input {
+        width: 700px;
+    }
+
+    .grey-box {
+        margin-top: 70px;
+        width: 300px;
+    }
 }
