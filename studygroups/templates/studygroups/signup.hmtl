@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Study Group </title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js"></script>
+<script src="studygroups.js"></script>
+ <link href="studygroups.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Study Group</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> 
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li role="separator" class="divider"><a href="#/">Search</a></li>
+                    <li><a href="#">Add study group</a></li>
+                    <li><a href="#">Log in</a></li>
+                    <li><a href="#">Sign up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="login-main-image">
+                <div class="login-wrapper fadeInUp">
+                    <div class="text1"></div>
+                        <form class="form-horizontal">
+                                <legend>Sign up</legend>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="name">Name</label>  
+                                    <div class="col-md-4">
+                                        <input id="name" name="name" type="text" placeholder="name" class="form-control input-md">  
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="email">Email address</label>
+                                    <div class="col-md-4">
+                                        <input id="email" name="email" type="text" placeholder="email address" class="form-control input-md"> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="phone">Phone number</label>  
+                                    <div class="col-md-4">
+                                        <input id="phone" name="phone" type="text" placeholder="phone number" class="form-control input-md">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="password">Password</label>
+                                    <div class="col-md-4">
+                                        <input id="password" name="password" type="password" placeholder="password" class="form-control input-md">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="confirmpassword">Confirm password</label>
+                                    <div class="col-md-4">
+                                        <input id="confirmpassword" name="confirmpassword" type="password" placeholder="confirm password" class="form-control input-md">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-info" style="margin:20px 0px 20px 0px;">Submit</button>
+                        </form>
+                        {% if form.errors %}
+                        <p>Fields not properly filled out. Please try again.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

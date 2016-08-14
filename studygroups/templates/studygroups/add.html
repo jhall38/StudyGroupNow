@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Study Group </title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js"></script>
+<script src="studygroups.js"></script>
+ <link href="studygroups.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Study Group</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> 
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li role="separator" class="divider"><a href="#/">Search</a></li>
+                    <li><a href="#">Add study group</a></li>
+                    <li><a href="#">Manage</a></li>
+                    <li><a href="#">Log in</a></li>
+                    <li><a href="#">Sign up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="login-main-image">
+                <div class="login-wrapper fadeInUp">
+                    <div class="text1"></div>
+                        <form class="form-horizontal">
+                                <legend>Add study group</legend>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="class">Class</label>  
+                                    <div class="col-md-4">
+                                        <input list="classes" name="class" placeholder="class" class="form-control input-md">
+                                            <datalist id="classes">
+                                                <option value="INFO 200">
+                                                <option value="INFO 300">
+                                                <option value="INFO 340">
+                                                <option value="INFO 343">
+                                                <option value="INFO 344">
+                                            </datalist>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="location">Location</label>  
+                                    <div class="col-md-4">
+                                        <input list="locations" name="location" placeholder="location" class="form-control input-md">
+                                            <datalist id="locations">
+                                                <option value="Allen library">
+                                                <option value="Bagley">
+                                                <option value="Johnson">
+                                                <option value="Odegaard">
+                                                <option value="Suzallo">
+                                            </datalist>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="Description">Description</label>
+                                    <div class="col-md-4">                     
+                                        <textarea rows="4" class="form-control" id="Description" name="Description" placeholder="Description (Describe any details about the study group, example: Bring your laptop and we will be in room 300 in the back corner...)"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="date">Date</label>
+                                    <div class="col-md-4">
+                                        <input type="date" name="date" class="form-control input-md">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="starttime">Start time</label>
+                                    <div class="col-md-4">
+                                        <input type="time" name="starttime" class="form-control input-md">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="endtime">End time</label>
+                                    <div class="col-md-4">
+                                        <input type="time" name="endtime" class="form-control input-md">
+                                    </div>
+                                </div>
+                                <button type="submit" name="add" value="add" class="btn btn-info" style="margin:20px 0px 20px 0px;">Add</button>
+                        </form>
+                        {% if form.errors %}
+                        <p>Fields not properly filled out. Please try again.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
