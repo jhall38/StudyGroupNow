@@ -55,7 +55,6 @@ def submit_add_edit(request):
 	studygroup.course = request.POST['course']
 	studygroup.location = Location.objects.filter(name = request.POST['location'])[0]
 	studygroup.location_desc = request.POST['description']
-	studygroup.location_desc = request.POST['description']
 	print(request.POST['enddate'])
 	studygroup.end_time = request.POST['enddate'] + ' ' + request.POST['endtime']
 	studygroup.manager = request.user
