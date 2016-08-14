@@ -1,0 +1,73 @@
+{% extends 'studygroups/base.html' %}
+{% block title %}Start a Study Group{% endblock %}
+
+{% block body %}
+    <div class="container">
+            <div class="login-main-image">
+                <div class="login-wrapper fadeInUp">
+                    <div class="text1"></div>
+                        <form class="form-horizontal">
+        		<div class="row">
+                        	<legend>Add study group</legend>
+                        	<div class="col-md-4 center-block" style="float: none;">
+                                	<label class="control-label" for="class">Class</label>  
+                                        <input list="classes" name="class" placeholder="class" class="form-control input-md">
+                                        <datalist id="classes">
+                                        	<option value="INFO 200">
+                                                <option value="INFO 300">
+                                                <option value="INFO 340">
+                                                <option value="INFO 343">
+                                                <option value="INFO 344">
+                                        </datalist>
+                                </div>
+			</div>
+			<div class="row">
+                                <div class="col-md-4 center-block" style="float: none;">
+                                	<label class="control-label" for="location">Location</label>  
+                                        <select id="locations" name="location" placeholder="Select a Location!" class="form-control input-md">
+                                        	<option value="Allen library">Allen library </option>
+                                                <option value="Bagley">
+                                                <option value="Johnson">
+                                                <option value="Odegaard">
+                                                <option value="Suzallo">
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 center-block" style="float: none;">
+					<label for="location_name" class="control-label">Name</label>
+					<input id="location_name" class="form-control">
+					<label for="location_address" class="control-label">Address</label>
+					<input id="location_address" class="form-control" type="text">
+                             	    	<button id="newlocation" class="btn btn-primary">Add Location</button>
+				</div>
+			</div>
+			<div class="row">
+                                <div class="center-block col-md-4" style="float: none;">
+                                    <label class="control-label" for="Description">Description</label>
+                                                        
+                                    <textarea rows="4" class="form-control" id="Description" name="Description" placeholder="Description (Describe any details about the study group, example: Bring your laptop and we will be in room 300 in the back corner...)"></textarea>
+                               </div>
+                        </div>
+			<div class="row">
+                                <div class="col-md-4 center-block" style="float: none;">
+                                	<label class="control-label" for="endtime">End time</label>
+                                	<input type="time" name="endtime" class="form-control input-md">
+                      		</div>
+			</div>
+			<div class="row">
+				<div class="col-4 center-block" style="float: none;">
+                                	<button type="submit" name="add" value="add" class="btn btn-info" style="margin:20px 0px 20px 0px;">Add</button>
+				</div>
+			</div>
+			</form>
+                        {% if form.errors %}
+                        <p>Fields not properly filled out. Please try again.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
