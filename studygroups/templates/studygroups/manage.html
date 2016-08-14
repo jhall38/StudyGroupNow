@@ -12,13 +12,14 @@
 				{% if studygroup %}
 				<ul>
 					<li>Make this pretty!!!</li>
-					<li>studygroup.course_code</li>
-					<li>studygroup.location</li>
-					<li>studygroup.location_desc</li>
-					<li>studygroup.end_date</li>
+					<li>{{studygroup.course_code}}</li>
+					<li>{{studygroup.location.name}}</li>
+					<li>{{studygroup.location.address}}</li>
+					<li>{{studygroup.location_desc}}</li>
+					<li>{{studygroup.end_date}}</li>
 				</ul>
 				<a href={% url 'add_or_edit' %}><button class="btn btn-primary">Edit Study Group</button></a>
-				<a href={% url 'delete' %}<button class="btn btn-primary">End Study Group</button></a>
+				<a href={% url 'delete' %}><button class="btn btn-primary">End Study Group</button></a>
 				{% else %}
 				<h2>No Study Groups to Manage</h2>
 				<a href={% url 'add_or_edit' %}><button class="btn btn-primary">Start a Study Group Now!</button></a>

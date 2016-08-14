@@ -4,9 +4,24 @@
 
 {% block scripts %}
 <script src="{% static "js/ajax.js" %}"></script>
+<script>
+	$(function() {
+		{% if studygroup %}
+		$('#course').val("{{studygroup.course_code}}");
+		$("#locations").val("{{studygroup.location.name}}")[0];
+		$('select').change();
+		$('#description').val("{{studygroup.location_desc}}");
+		var date = "{{studygroup.end_time.date|date:"SHORT_DATE_FORMAT"}}";
+		date = date.substring(6) + "/" + date.substring(0,5);
+		date = date.replace('/','-');
+		date = date.replace('/','-');
+		$('#enddate').val(date);
+		var time = "{{ studygroup.end_time.time|time:"H:i"}}";
+		$('#endtime').val(time);
+		{% endif %}	
+	});
+</script>
 {% endblock %}
-
-
 
 {% block body %}
     <div class="container">
@@ -19,7 +34,7 @@
                         	<legend>{% if active_studygroup %}Edit Study Group{% else %}Add Study Group{% endif %}</legend>
                         	<div class="col-md-4 center-block" style="float: none;">
                                 	<label class="control-label" for="classes">Class</label>  
-                                        <input list="classes" name="course" placeholder="class" class="form-control input-md">
+                                        <input id="course" list="classes" name="course" placeholder="class" class="form-control input-md">
                                         <datalist id="classes">
                                         </datalist>
                                 </div>
@@ -58,7 +73,7 @@
 			<div class="row">
                                 <div class="col-md-4 center-block" style="float: none;">
                                 	<label class="control-label" for="endtime">End time</label>
-                                	<input type="time" name="endtime" class="form-control input-md">
+                                	<input id="endtime" type="time" name="endtime" class="form-control input-md">
                       		</div>
 			</div>
 			<div class="row">

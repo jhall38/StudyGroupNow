@@ -49,7 +49,8 @@ def manage(request):
 
 def add_or_edit(request):
 	if StudyGroup.objects.filter(manager=request.user).exists():
-		return render(request, 'studygroups/add_or_edit.html', {'active_studygroup': True})
+		print("printyprint: " + StudyGroup.objects.filter(manager=request.user)[0].course_code)
+		return render(request, 'studygroups/add_or_edit.html', {'studygroup': StudyGroup.objects.filter(manager=request.user)[0], 'active_studygroup': True})
 	else:
 		return render(request, 'studygroups/add_or_edit.html')
 
@@ -59,16 +60,19 @@ def submit_add_edit(request):
 	else:
 		studygroup = StudyGroup.objects.filter(manager=request.user)[0]
 
-	studygroup.course = request.POST['course']
+	studygroup.course_code = request.POST['course']
 	studygroup.location = Location.objects.filter(name = request.POST['location'])[0]
 	studygroup.location_desc = request.POST['description']
 	print(request.POST['enddate'])
 	studygroup.end_time = request.POST['enddate'] + ' ' + request.POST['endtime']
 	studygroup.manager = request.user
 	studygroup.save()
-	return render(request, 'studygroups/manage.html')
+	return render(request, 'studygroups/manage.html', {'studygroup': StudyGroup.objects.filter(manager=request.user)[0], 'active_studygroup': True})
 def load_locations(request):
 	locations = Location.objects.values_list('name', flat=True)
+	if StudyGroup.objects.filter(manager=request.user).exists():
+		current_location = StudyGroup.objects.filter(manager=request.user)[0].location.name 
+		return render(request, 'studygroups/locations.html', {'locations' : locations, 'current_location' : current_location})
 	return render(request, 'studygroups/locations.html', {'locations' : locations})
 def new_location(request):
 	if request.method == "POST":
@@ -80,7 +84,7 @@ def new_location(request):
 	return render(request, 'studygroups/locations.html', {'locations' : locations})
 def delete(request):
 	if StudyGroup.objects.filter(manager=request.user).exists():
-		Studygroups.objects.filter(manager=request.user)[0].delete()
+		StudyGroup.objects.filter(manager=request.user)[0].delete()
 	return render(request, 'studygroups/index.html')
 def signup(request):
 	return render(request, 'studygroups/signup.html')

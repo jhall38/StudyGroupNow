@@ -6,13 +6,12 @@ class Location(models.Model):
 	address = models.CharField(max_length=500)
 
 class StudyGroup(models.Model):
-	name = models.CharField(max_length=100)
 	manager = models.ForeignKey('auth.User')
 	location = models.ForeignKey(Location)
 	course_code = models.CharField(max_length=15)
 	location_desc = models.CharField(max_length=500)
 	stat_time = models.DateTimeField(auto_now_add=True)
-	end_time = models.DateTimeField(blank=True)
+	end_time = models.DateTimeField()
 
 class UserInfo(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)

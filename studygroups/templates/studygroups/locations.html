@@ -1,6 +1,15 @@
-
+{% if current_location %}
 {% for location in locations %}
-<option val={{location}}>{{location}}</option>
+{% if location == current_location %}
+<option val="{{location}}" id="selected">{{location}}</option>
+{% else %}
+<option val="{{location}}">{{location}}</option>
+{% endif %}
 {% endfor %}
+{% else %}
+{% for location in locations%}
+<option val="{{location}}">{{location}}</option>
+{% endfor %}
+{% endif %}
 <option val="Other Location">Other Location</option>
 

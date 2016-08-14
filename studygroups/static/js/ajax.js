@@ -30,6 +30,7 @@ $(function(){
 	});
 	$.get("/load_locations/", function(data) {
 		$('#locations').html(data)
+		$("#locations").val($('#selected').val());		
 	});
 });
 
