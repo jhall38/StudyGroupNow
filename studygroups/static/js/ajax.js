@@ -11,8 +11,11 @@ $(function(){
 			dataType: 'html'
 		});
 	});
-	$.get("load_courses/", function(data) {
+	$.get("/load_courses/", function(data) {
 		$('#classes').html(data);
+	});
+	$.get("/load_locations/", function(data) {
+		$('#locations').html(data)
 	});
 });
 
