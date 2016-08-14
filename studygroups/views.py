@@ -13,7 +13,10 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/login/')
 def index(request):
-	return render(request, 'studygroups/index.html')
+	if StudyGroup.objects.filter(manager=request.user) is None:
+		return render(request, 'studygroups/index.html', {'active_studygroup' : False})
+	else:
+		return render(request, 'studygroups/index.html', {'active_studygroup' : True})
 
 def search_studygroups(request):
 	if request.method == "POST":
@@ -28,4 +31,7 @@ def load_courses(request):
 	course_codes = StudyGroup.objects.values_list('course_code', flat=True).distinct()
 	print(course_codes)
 	return render(request, 'studygroups/course_codes.html', {'course_codes' : course_codes})
-
+def add(request):
+	return render(request, 'studygroups/add.html')
+def manage(request):
+	return render(request, 'studygroups/manage.html')
