@@ -1,10 +1,17 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.template import Template, RequestContext
 #from django.core.context_processors import csrf
-from .models import StudyGroup, UserInfo, Location
+from .models import StudyGroup, UserInfo, Location, User
 from django.contrib.auth.decorators import login_required
 import datetime
+from django.http import HttpResponseRedirect
+from django import forms
+from django.contrib.auth import authenticate, login
+from django.views.generic import View
+from .forms import UserForm
+from django.contrib.auth.forms import UserCreationForm
+
 
 #class StudGroupListView(generic.ListView):
 #	template_name = 'studygroups/index.html'
@@ -75,3 +82,48 @@ def delete(request):
 	if StudyGroup.objects.filter(manager=request.user).exists():
 		Studygroups.objects.filter(manager=request.user)[0].delete()
 	return render(request, 'studygroups/index.html')
+def signup(request):
+	return render(request, 'studygroups/signup.html')
+def signup_submit(request):
+	new_user = User()
+	new_user.username = request.POST['username']
+	new_user.password = request.POST['password']
+	new_user.email = request.POST['email']
+	new_user.save()
+	return render(request, 'studygroups/index.html')
+#def register(request):
+#    if request.method == 'POST':
+#        form = UserCreationForm(request.POST)
+#        if form.is_valid():
+#            new_user = form.save()
+#            return HttpResponseRedirect("/books/")
+#    else:
+#        form = UserCreationForm()
+#    return render(request, "registration/register.html", {
+#        'form': form,
+#    })
+
+class UserFormView(View):
+	form_class = UserForm
+	template_name = 'studygroups/signup.html'
+	
+	def get(self, request):
+		form = self.form_class(None)
+		return render(request, self.template_name, {'form': form})
+
+	def post(self, request):
+		form = self.form_class(request.POST)
+		print(form)
+		if form.is_valid():
+			print("test")
+			user = form.save(commit=False)
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password']
+			user.set_password(password)
+			user.save()
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				if user.is_active:
+					login(request, user)
+					return redirect('index')
+		return render(request, self.template_name, {'form': form})

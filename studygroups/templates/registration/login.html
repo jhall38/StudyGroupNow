@@ -5,8 +5,8 @@
 {% block body %}
 
 {% block nav %}
-<li><a href="#">Login</a></li>
-<li><a href="#">Register</a></li>
+<li><a href="{% url 'login' %}">Login</a></li>
+<li><a href="{% url 'signup' %}">Sign Up</a></li>
 {% endblock %}
 
 <form method="post" action="{% url 'login' %}">
@@ -40,6 +40,7 @@
                                 </div>
                                 <input type="submit" name="login" value="Login!" class="btn btn-info" style="margin:20px 0px 20px 0px;"/> <input type="hidden" name="next" value="{{ next }}" />
                         </form>
+			<a href="{% url 'signup' %}"><button type="button" class="btn btn-primary">Sign Up</button></a>
                    </div>
                 </div>
             </div>
