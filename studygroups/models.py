@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 class Location(models.Model):
 	name = models.CharField(max_length=50)
 	address = models.CharField(max_length=500)
+	lat = models.FloatField()
+	lon = models.FloatField()
 
 class StudyGroup(models.Model):
 	manager = models.ForeignKey('auth.User')
