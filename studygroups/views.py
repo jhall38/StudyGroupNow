@@ -4,7 +4,7 @@ from django.template import Template, RequestContext
 #from django.core.context_processors import csrf
 from .models import StudyGroup, UserInfo, Location, User
 from django.contrib.auth.decorators import login_required
-import datetime
+from datetime import datetime
 from django.http import HttpResponseRedirect
 from django import forms
 from django.contrib.auth import authenticate, login
@@ -24,8 +24,6 @@ def index(request):
 	if not StudyGroup.objects.filter(manager=request.user).exists():
 		return render(request, 'studygroups/index.html', {'active_studygroup' : False})
 	else:
-		print(request.user)
-		print(StudyGroup.objects.filter(manager=request.user))
 		return render(request, 'studygroups/index.html', {'active_studygroup' : True})
 
 def search_studygroups(request):
@@ -33,7 +31,7 @@ def search_studygroups(request):
 		search_text = request.POST['search_text']
 	else:
 		search_text = ''
-	studygroups = StudyGroup.objects.filter(course_code=search_text)
+	studygroups = StudyGroup.objects.filter(course_code=search_text).filter(end_time__gte=datetime.now())
 	
 	return render(request, 'studygroups/studygroups_search.html', {'studygroups' : studygroups})
 
