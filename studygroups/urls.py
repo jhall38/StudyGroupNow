@@ -9,4 +9,5 @@ urlpatterns = [
 	url(r'^add_or_edit/submit/$', views.submit_add_edit, name="submit_add_edit"),
 	url(r'^manage/$', views.manage, name="manage"),
 	url(r'^load_locations/$', views.load_locations),
+	url(r'^add_or_edit/new_location/$', views.new_location),
 ]

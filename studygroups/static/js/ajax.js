@@ -11,6 +11,20 @@ $(function(){
 			dataType: 'html'
 		});
 	});
+	$('#newlocation').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "new_location/",
+			data: {
+				'new_location_name' : $('#location_name').val(),
+				'new_location_address' : $('#location_address').val(),
+				'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+			},
+			success: newLocationSuccess,
+			dataType: 'html'
+		});
+	});
+	
 	$.get("/load_courses/", function(data) {
 		$('#classes').html(data);
 	});
@@ -23,4 +37,11 @@ function searchSuccess(data, textStatus, jqXHR){
 	$('#search-results').html(data);
 
 }
+
+function newLocationSuccess(data, textStatus, jqXHR){
+	$('#locations').html(data);
+	$('#locations').val($('#location_name').val());
+}
+
+
 
