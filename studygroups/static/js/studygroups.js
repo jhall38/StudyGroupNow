@@ -25,7 +25,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 /* search page */
 $(document).ready(function(){
     $(".toggle-info").click(function(){
-        $(".search-info").slideToggle();
+        $(this).children(".search-info").slideToggle();
     });
 });
+
 
