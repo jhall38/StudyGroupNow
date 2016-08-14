@@ -1,0 +1,19 @@
+{% extends 'studygroups/base.html' %}
+
+
+{% block body %}
+
+<!--<ul>
+	{% for studygroup in object_list %}
+		<li> {{ studygroup.location }} </li>
+	{% endfor %}
+</ul>-->
+<h3>Search</h3>
+{% csrf_token %}
+<input type="text" id="search" name="search" />
+
+<ul id="search-results"></ul>	
+
+
+
+{% endblock %}

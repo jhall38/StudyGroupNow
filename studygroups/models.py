@@ -6,6 +6,7 @@ class StudyGroup(models.Model):
 	manager = models.ForeignKey('auth.User')
 	lon = models.FloatField()
 	lat = models.FloatField()
+	course_code = models.CharField(max_length=15)
 	location_desc = models.CharField(max_length=500)
 	stat_time = models.DateTimeField(auto_now_add=True)
 	end_time = models.DateTimeField(blank=True)

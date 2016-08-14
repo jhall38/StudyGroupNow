@@ -1,0 +1,12 @@
+{% if studygroups.count > 0 %}
+
+{% for studygroup in studygroups %}
+	<li>{{studygroup.location_desc}}</li>
+{% endfor %}
+
+
+{% else %}
+
+<li> No active study groups for that class </li>
+
+{% endif %}
