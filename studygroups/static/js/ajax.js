@@ -1,5 +1,5 @@
 $(function(){
-	$('#search').keyup(function(){
+	$('#search_courses').click(function(){
 		$.ajax({
 			type: "POST",
 			url: "search/",
@@ -34,7 +34,7 @@ $(function(){
 });
 
 function searchSuccess(data, textStatus, jqXHR){
-	$('#search-results').html(data);
+	$('#results').html(data);
 
 }
 

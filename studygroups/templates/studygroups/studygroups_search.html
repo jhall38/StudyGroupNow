@@ -1,12 +1,18 @@
 {% if studygroups.count > 0 %}
-
+<!-- do what you want with the data -->
 {% for studygroup in studygroups %}
-	<li>{{studygroup.location_desc}}</li>
+	<hr>
+	<div>{{studygroup.course_code}}</div>
+	<div>{{studygroup.location.name}}</div>
+	<div>{{studygroup.location.address}}</div>
+	<div>{{studygroup.location_desc}}</div>
+	<div>{{studygroup.manager.username}}</div>
+	<div> ... </div>
 {% endfor %}
 
 
 {% else %}
-
-<li> No active study groups for that class </li>
+<hr>
+<div> No active study groups for that class </div>
 
 {% endif %}

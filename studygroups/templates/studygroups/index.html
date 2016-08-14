@@ -18,8 +18,8 @@
                 <div>
                     <div class="col-md-4">
                         <ul class="searchbar">
-                            <li><input list="classes" name="searchclass" placeholder="Search classes" class="form-control input-md search-input"></li>
-                            <li><button type="submit" name="search" value="search" class="btn btn-info">Search</button></li>
+                            <li><input id="search" list="classes" name="searchclass" placeholder="Search classes" class="form-control input-md search-input"></li>
+                            <li><button id="search_courses" type="submit" name="search" value="search" class="btn btn-info">Search</button></li>
                                     <li><datalist id="classes">
                                     </datalist></li>
                         </ul>
@@ -29,7 +29,8 @@
                     <h2>TEST TEST TEST</h2>
             </div>
             <div class="col-md-4 split-display">
-                <div class="grey-box">
+		{% csrf_token %}
+		<div id="results" class="grey-box">
                 <div>Search results</div>
                     <div>
                         <hr/>
@@ -61,11 +62,10 @@
     </div>
 
 
-<h3>Search</h3>
-{% csrf_token %}
+<!--<h3>Search</h3>
 <input type="text" id="search" name="search" />
 
-<ul id="search-results"></ul>	
+<ul id="search-results"></ul>	-->
 
 
 
