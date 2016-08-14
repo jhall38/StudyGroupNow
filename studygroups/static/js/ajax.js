@@ -11,9 +11,13 @@ $(function(){
 			dataType: 'html'
 		});
 	});
+	$.get("load_courses/", function(data) {
+		$('#classes').html(data);
+	});
 });
 
 function searchSuccess(data, textStatus, jqXHR){
 	$('#search-results').html(data);
+
 }
 

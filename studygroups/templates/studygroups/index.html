@@ -8,11 +8,63 @@
 		<li> {{ studygroup.location }} </li>
 	{% endfor %}
 </ul>-->
+
+    <div class="container">
+        <div class="row">
+            <div class="white-box"></div>
+            <div class="col-md-8 split-display">
+                <div>
+                    <div class="col-md-4">
+                        <ul class="searchbar">
+                            <li><input list="classes" name="searchclass" placeholder="Search classes" class="form-control input-md search-input"></li>
+                            <li><button type="submit" name="search" value="search" class="btn btn-info">Search</button></li>
+                                    <li><datalist id="classes">
+                                    </datalist></li>
+                        </ul>
+                    </div>
+                </div>
+                    <div id="googleMap"></div>
+                    <h2>TEST TEST TEST</h2>
+            </div>
+            <div class="col-md-4 split-display">
+                <div class="grey-box">
+                <div>Search results</div>
+                    <div>
+                        <hr/>
+                        <div>1. date time</div>
+                        <div>City</div>
+                        <div class="toggle-info">hide / show button click me</div>
+                        <div class="search-info">
+                            <div>Person started</div>
+                            <div>Address: House or building number</div>
+                            <div>house or building number</div>
+                            <div>zip</div>
+                        </div>
+                    </div>
+                    <div>
+                        <hr/>
+                        <div>2. date time</div>
+                        <div>City</div>
+                        <div class="toggle-info">hide / show button click me</div>
+                        <div class="search-info">
+                        <div>Person started</div>
+                        <div>Address: House or building number</div>
+                        <div>house or building number</div>
+                        <div>zip</div>
+                        <div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 <h3>Search</h3>
 {% csrf_token %}
 <input type="text" id="search" name="search" />
 
 <ul id="search-results"></ul>	
+
 
 
 

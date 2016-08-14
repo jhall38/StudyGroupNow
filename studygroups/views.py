@@ -24,3 +24,7 @@ def search_studygroups(request):
 	
 	return render(request, 'studygroups/studygroups_search.html', {'studygroups' : studygroups})
 
+def load_courses(request):
+	course_codes = StudyGroup.objects.values_list('course_code', flat=True).distinct()
+	print(course_codes)
+	return render(request, 'studygroups/course_codes.html', {'course_codes' : course_codes})
