@@ -1,8 +1,6 @@
-{% if locations.count > 0 %}
 
 {% for location in locations %}
-	<option>{{location}}</option>
+<option val={{location}}>{{location}}</option>
 {% endfor %}
-
-{% endif %}
+<option val="Other Location">Other Location</option>
 
