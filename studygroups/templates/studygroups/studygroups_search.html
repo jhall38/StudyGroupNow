@@ -1,13 +1,29 @@
 {% if studygroups.count > 0 %}
 <!-- do what you want with the data -->
+<script>
+$(document).ready(function(){
+    $(".toggle-info").click(function(){
+        $(this).children(".search-info").slideToggle();
+    });
+});
+</script>
 {% for studygroup in studygroups %}
-	<hr>
-	<div>{{studygroup.course_code}}</div>
-	<div>{{studygroup.location.name}}</div>
-	<div>{{studygroup.location.address}}</div>
-	<div>{{studygroup.location_desc}}</div>
-	<div>{{studygroup.manager.username}}</div>
-	<div> ... </div>
+	<div>Search results</div>
+    <div>
+        <hr/>
+        <div>{{ forloop.counter }} {{studygroup.location.name}}</div>
+        <div>{{studygroup.course_code}}</div>
+        <div class="toggle-info">
+            hide / show button click me
+            <div class="search-info">
+                <div>{{studygroup.location.address}}</div>
+                <div>{{studygroup.location_desc}}</div>
+                <div>{{studygroup.manager.username}}</div>
+                <div>Start time {{studygroup.stat_time}}</div>
+                <div>End time {{studygroup.end_time}}</div>
+            </div>
+        </div>
+    </div>
 {% endfor %}
 
 
@@ -16,3 +32,11 @@
 <div> No active study groups for that class </div>
 
 {% endif %}
+
+<!-- <hr>
+	<div>{{studygroup.course_code}}</div>
+	<div>{{studygroup.location.name}}</div>
+	<div>{{studygroup.location.address}}</div>
+	<div>{{studygroup.location_desc}}</div>
+	<div>{{studygroup.manager.username}}</div>
+	<div> ... </div>-->

@@ -28,11 +28,11 @@ function initialize() {
 google.maps.event.addDomListener(window, 'load', initialize);
 /* end map */
 
-/* search page */
-$(document).ready(function(){
+/* search page 
+toggle the search result info*/
+/*$(document).ready(function(){
     $(".toggle-info").click(function(){
         $(this).children(".search-info").slideToggle();
     });
-});
-
+/*});*/
 

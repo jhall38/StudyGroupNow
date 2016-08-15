@@ -3,7 +3,6 @@
 {% block title %}Find a Study Group{% endblock %}
 
 {% block scripts %}
-<!--<script src="http://maps.googleapis.com/maps/api/js"></script>-->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYxOP1Eb_CAGqLl2XrZBpADTaeV40MuBA" type="text/javascript"></script>
 <script src="{% static "js/ajax.js" %}"></script>
 <script src="{% static "js/studygroups.js" %}"></script>
@@ -27,41 +26,10 @@
                     </div>
                 </div>
                     <div id="googleMap"></div>
-                    <h2>TEST TEST TEST</h2>
             </div>
             <div class="col-md-4 split-display">
 		{% csrf_token %}
 		<div id="results" class="grey-box">
-                <div>Search results</div>
-                    <div>
-                        <hr/>
-                        <div>2. date time</div>
-                        <div>City</div>
-                        <div class="toggle-info">
-                            hide / show button click me
-                            <div class="search-info">
-                                <div>Person started</div>
-                                <div>Address: House or building number</div>
-                                <div>house or building number</div>
-                                <div>zip</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <hr/>
-                        <div>2. date time</div>
-                        <div>City</div>
-                        <div class="toggle-info">
-                            hide / show button click me
-                            <div class="search-info">
-                                <div>Person started</div>
-                                <div>Address: House or building number</div>
-                                <div>house or building number</div>
-                                <div>zip</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
