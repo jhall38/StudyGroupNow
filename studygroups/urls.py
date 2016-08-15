@@ -13,5 +13,6 @@ urlpatterns = [
 	url(r'^add_or_edit/new_location/$', views.new_location),
 	url(r'^signup/$', views.UserFormView.as_view(), name="signup"),
 	url(r'^signup/submit/$', views.signup_submit, name="signup_submit"),
-#	url(r'^register/$', views.register, name="register"),
+	url(r'^profile/(?P<pk>[0-9]+)/$', views.profile, name='profile'),
+	url(r'^edit_profile/$', views.UserInfoUpdate.as_view(), name='edit_profile')
 ]

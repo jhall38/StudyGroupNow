@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect
 from django import forms
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
+from django.views.generic.edit import CreateView, UpdateView
 from .forms import UserForm
 from django.contrib.auth.forms import UserCreationForm
 
@@ -105,6 +106,12 @@ def signup_submit(request):
 #        'form': form,
 #    })
 
+@login_required(login_url='/login/')
+def profile(request, pk):
+	this_user = get_object_or_404(User, pk=pk)
+	this_profile = get_object_or_404(UserInfo, user=this_user)
+	return render(request, 'studygroups/profile.html', {'this_profile' : this_profile})
+
 class UserFormView(View):
 	form_class = UserForm
 	template_name = 'studygroups/signup.html'
@@ -129,3 +136,13 @@ class UserFormView(View):
 					login(request, user)
 					return redirect('index')
 		return render(request, self.template_name, {'form': form})
+#class UserInfoUpdate(UpdateView):
+#	model UserInfo
+
+
+@login_required(login_url='/login/')
+def edit_profile(request):
+	return render(request, {'user' : request.user})
+
+def submit_edit_profile(request):
+	

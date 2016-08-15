@@ -2,12 +2,11 @@
 
 {% block title %}Login{% endblock %}
 
-{% block body %}
-
 {% block nav %}
-<li><a href="{% url 'login' %}">Login</a></li>
 <li><a href="{% url 'signup' %}">Sign Up</a></li>
 {% endblock %}
+
+{% block body %}
 
         <div class="container">
             <div class="row">
@@ -15,7 +14,6 @@
                     <div class="login-wrapper fadeInUp">
                         <form class="form-horizontal" method="post" action="{% url 'login' %}">
                             {% csrf_token %}
-
                                 <legend>Log in</legend>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="email">Username</label>
