@@ -1,4 +1,6 @@
 /* google map */
+/* api key below */
+/* AIzaSyBYxOP1Eb_CAGqLl2XrZBpADTaeV40MuBA */
 var myCenter = new google.maps.LatLng(47.655078,-122.307882);
 
 function initialize() {
