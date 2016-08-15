@@ -9,25 +9,16 @@
 <li><a href="{% url 'signup' %}">Sign Up</a></li>
 {% endblock %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-    <div class="container">
-	{% if form.errors %}
-	<div class="row">
-		<div class="col-md-12">
-			<p class="text-center">Your username and password didn't match. Please try again.</p>
-		</div>
-	</div>
-	{% endif %}
+        <div class="container">
+            <div class="row">
+                <div class="login-main-image">
+                    <div class="login-wrapper fadeInUp">
+                        <form class="form-horizontal" method="post" action="{% url 'login' %}">
+                            {% csrf_token %}
 
-        <div class="row">
-            <div class="login-main-image">
-                <div class="login-wrapper fadeInUp">
-                    <div class="text1"></div>
-                        <form class="form-horizontal">
                                 <legend>Log in</legend>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="id_username">Username</label>
+                                    <label class="col-md-4 control-label" for="email">Username</label>
                                     <div class="col-md-4">
                                         <input id="id_username" name="username" type="text" placeholder="Username" class="form-control input-md" required> 
                                     </div>
@@ -35,15 +26,21 @@
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="password">Password</label>
                                     <div class="col-md-4">
-                                        <input id="id_password" name="password" type="password" placeholder="password" class="form-control input-md"required>
+                                        <input id="id_password" name="password" type="password" placeholder="password" class="form-control input-md" required>
                                     </div>
                                 </div>
-                                <input type="submit" name="login" value="Login!" class="btn btn-info" style="margin:20px 0px 20px 0px;"/> <input type="hidden" name="next" value="{{ next }}" />
+                               <input type="submit" name="login" value="Login!" class="btn btn-info" style="margin:20px 0px 20px 0px;"/> <input type="hidden" name="next" value="{{ next }}" />
+                               <a href="{% url 'signup' %}"><button type="button" class="btn btn-primary">Sign Up</button></a>
                         </form>
-			<a href="{% url 'signup' %}"><button type="button" class="btn btn-primary">Sign Up</button></a>
-                   </div>
+                    </div>
                 </div>
             </div>
+            {% if form.errors %}
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-center">Your username and password didn't match. Please try again.</p>
+                </div>
+            </div>
+            {% endif %}
         </div>
-    </div>
 {% endblock %}

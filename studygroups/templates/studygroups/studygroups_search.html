@@ -2,27 +2,30 @@
 <!-- do what you want with the data -->
 <script>
 	var center = new google.maps.LatLng("{{studygroups.0.location.lat}}", "{{studygroups.0.location.lon}}");
-
 	function initialize() {
 		var mapProp = {
 			center:center,
 			zoom:15,
 			mapTypeId:google.maps.MapTypeId.ROADMAP
 		};
-	var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		function offset(coordinate) {
+			return coordinate + (Math.random() -.5) / 10000;
+		}
 
-	{% for studygroup in studygroups %}
-	var coordinates = new google.maps.LatLng("{{studygroup.location.lat}}", "{{studygroup.location.lon}}");
-	var marker=new google.maps.Marker({
-		position:coordinates,
-		map: map,
-		title: "{{studygroup.location.name}}",
-		icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld={{forloop.counter}}|FF0000|000000'
-	  });
-	{% endfor %}
+		{% for studygroup in studygroups %}
+		var lat = {{studygroup.location.lat}};
+		var lon = {{studygroup.location.lon}};
+		var coordinates = new google.maps.LatLng(offset(lat), offset(lon));
+		var marker=new google.maps.Marker({
+			position:coordinates,
+			map: map,
+			title: "{{studygroup.location.name}}",
+			icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld={{forloop.counter}}|FF0000|000000'
+		});
+		{% endfor %}
 }
 initialize();
-
 $(document).ready(function(){
     $(".toggle-info").click(function(){
         $(this).children(".search-info").slideToggle();
@@ -36,7 +39,6 @@ $(document).ready(function(){
         <div><b>{{ forloop.counter }}.</b> {{studygroup.location.name}}</div>
         <div>{{studygroup.course_code}}</div>
         <div class="toggle-info">
-            hide / show button click me
             <div class="search-info">
                 <div>{{studygroup.location.address}}</div>
                 <div>{{studygroup.location_desc}}</div>
@@ -44,6 +46,7 @@ $(document).ready(function(){
                 <div>Start time {{studygroup.stat_time}}</div>
                 <div>End time {{studygroup.end_time}}</div>
             </div>
+             hide / show button click me
         </div>
     </div>
 {% endfor %}
