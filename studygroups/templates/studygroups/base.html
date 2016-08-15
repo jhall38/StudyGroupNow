@@ -6,9 +6,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="{% static "css/studygroups.css" %}"/>
 	<script src="{% static "js/jquery-3.1.0.js" %}"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	{% block scripts %}
 	{% endblock %}
 </head>
@@ -27,16 +28,16 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-		    {% block nav %}
+                    {% block nav %}
                     <li role="separator" class="divider"><a href="{% url 'index' %}">Find Study Groups</a></li>
-		    {% if active_studygroup %}
-		    <li><a href="{% url 'manage' %}">Manage Study Group</a></li>
+                    {% if active_studygroup %}
+                    <li><a href="{% url 'manage' %}">Manage Study Group</a></li>
                     {% else %}
-		    <li><a href="{% url 'add_or_edit' %}">Add Study Groups</a></li>
+                    <li><a href="{% url 'add_or_edit' %}">Add Study Groups</a></li>
                     {% endif %}
-		    <!--<li><a href="#">Profile</a></li>-->
+                    <!--<li><a href="#">Profile</a></li>-->
                     <li><a href="{% url 'logout' %}">Logout</a></li>
-		    {% endblock %}
+                    {% endblock %}
                 </ul>
             </div>
         </div>
