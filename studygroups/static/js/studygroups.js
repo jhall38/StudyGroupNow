@@ -1,6 +1,6 @@
 /* google map */
 /* api key below */
-/* AIzaSyBYxOP1Eb_CAGqLl2XrZBpADTaeV40MuBA */
+/* AIzaSyBYxOP1Eb_CAGqLl2XrZBpADTaeV40MuBA 
 var myCenter = new google.maps.LatLng(47.655078,-122.307882);
 
 function initialize() {
@@ -11,7 +11,7 @@ function initialize() {
 	};
 
 	var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-	var markers = [['111', 'seattle', 98103, 47.65895, -122.307636 ],['321', 'seattle', 98103, 47.656639, -122.310318]]; /* {{django list of addresses and coordinates}} */
+	var markers = [['111', 'seattle', 98103, 47.65895, -122.307636 ],['321', 'seattle', 98103, 47.656639, -122.310318]]; /* {{django list of addresses and coordinates}} 
 
 	for(i = 0; i < markers.length; i++) {
 		var coordinates = new google.maps.LatLng(markers[i][3], markers[i][4]);
@@ -26,7 +26,7 @@ function initialize() {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
-/* end map */
+ end map */
 
 /* search page 
 toggle the search result info*/

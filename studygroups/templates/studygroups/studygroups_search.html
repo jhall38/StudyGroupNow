@@ -1,17 +1,39 @@
 {% if studygroups.count > 0 %}
 <!-- do what you want with the data -->
 <script>
+	var center = new google.maps.LatLng("{{studygroups.0.location.lat}}", "{{studygroups.0.location.lon}}");
+
+	function initialize() {
+		var mapProp = {
+			center:center,
+			zoom:15,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		};
+	var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+	{% for studygroup in studygroups %}
+	var coordinates = new google.maps.LatLng("{{studygroup.location.lat}}", "{{studygroup.location.lon}}");
+	var marker=new google.maps.Marker({
+		position:coordinates,
+		map: map,
+		title: "{{studygroup.location.name}}",
+		icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld={{forloop.counter}}|FF0000|000000'
+	  });
+	{% endfor %}
+}
+initialize();
+
 $(document).ready(function(){
     $(".toggle-info").click(function(){
         $(this).children(".search-info").slideToggle();
     });
 });
 </script>
+<div>Search results</div>
 {% for studygroup in studygroups %}
-	<div>Search results</div>
     <div>
         <hr/>
-        <div>{{ forloop.counter }} {{studygroup.location.name}}</div>
+        <div><b>{{ forloop.counter }}.</b> {{studygroup.location.name}}</div>
         <div>{{studygroup.course_code}}</div>
         <div class="toggle-info">
             hide / show button click me
