@@ -93,6 +93,8 @@ def signup_submit(request):
 	new_user.email = request.POST['email']
 	new_user.save()
 	return render(request, 'studygroups/index.html')
+def profile(request):
+	return render(request, 'studygroups/profile.html')
 #def register(request):
 #    if request.method == 'POST':
 #        form = UserCreationForm(request.POST)
