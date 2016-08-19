@@ -95,6 +95,8 @@ def signup_submit(request):
 	return render(request, 'studygroups/index.html')
 def profile(request):
 	return render(request, 'studygroups/profile.html')
+def edit_profile(request):
+	return render(request, 'studygroups/edit_profile.html')
 #def register(request):
 #    if request.method == 'POST':
 #        form = UserCreationForm(request.POST)

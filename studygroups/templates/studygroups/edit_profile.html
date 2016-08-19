@@ -26,10 +26,10 @@
             				</div>
             				{% endfor %} -->
 
-                           <div class="form-group">
-                                <label class="col-md-4 control-label" for="username">Username</label>  
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="image">Profile image</label>  
                                 <div class="col-md-4">
-                                    <input id="username" name="username" type="text" placeholder="name" class="form-control input-md">  
+                                    <input id="image" name="image" type="file" accept="image/*" class="form-control input-md">  
                                 </div>
                             </div>
                             <div class="form-group">
@@ -83,7 +83,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="ideal">Ideal study group</label>
                                 <div class="col-md-4">                     
-                                    <textarea class="form-control" id="ideal" name="ideal">Please describe yourself here</textarea>
+                                    <textarea class="form-control" id="ideal" name="ideal">Please describe your ideal study group here</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -98,7 +98,7 @@
                                     <input id="confirmpassword" name="confirmpassword" type="password" placeholder="confirm password" class="form-control input-md">
                                 </div>
                             </div>
-                            <button type="submit" name="signup" value="signup" class="btn btn-info" style="margin:20px 0px 20px 0px;">Sign up</button>
+                            <button type="submit" name="submit" value="submit" class="btn btn-info" style="margin:20px 0px 20px 0px;">Submit</button>
                         </form>
                         {% if form.errors %}
                         <p>Fields not properly filled out. Please try again.</p>
