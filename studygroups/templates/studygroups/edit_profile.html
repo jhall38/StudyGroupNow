@@ -1,0 +1,111 @@
+{% extends 'studygroups/base.html' %}
+{% block title %}Find a Study Group{% endblock %}
+
+{% block nav %}
+<li><a href="{% url 'login' %}">Login</a></li>
+<li><a href="{% url 'signup' %}">Sign Up</a></li>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+        <div class="row">
+            <div class="login-main-image">
+                <div class="login-wrapper fadeInUp">
+                    <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+				        {% csrf_token %}
+				        <legend>Profile</legend>
+				           <!-- {% for field in form %}
+            				<div class="form-group">
+            				<div class="col-sm-offset-2 col-sm-10">
+            					<span class="text-danger small"> {{field.errors }}</label>
+            				</div>
+            				<label class="col-md-4 control-label">{{ field.label_tag }}</label>
+            				<div class="col-md-4">
+            					{{ field }}
+            				</div>
+            				</div>
+            				{% endfor %} -->
+
+                           <div class="form-group">
+                                <label class="col-md-4 control-label" for="username">Username</label>  
+                                <div class="col-md-4">
+                                    <input id="username" name="username" type="text" placeholder="name" class="form-control input-md">  
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="email">Email Address</label>
+                                <div class="col-md-4">
+                                    <input id="email" name="email" type="text" placeholder="email address" class="form-control input-md"> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="phone">Phone Number</label>
+                                <div class="col-md-4">
+                                    <input id="phone" name="phone" type="text" placeholder="phone number" class="form-control input-md"> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="about">About</label>
+                                <div class="col-md-4">                     
+                                    <textarea class="form-control" id="about" name="about">Please describe yourself here</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="area">Area of Study</label>
+                                <div class="col-md-4">
+                                    <input id="area" name="area" type="text" placeholder="Area of Study" class="form-control input-md">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="major">Current/Intended Major</label>
+                                <div class="col-md-4">
+                                    <input id="major" name="major" type="text" placeholder="Major" class="form-control input-md">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="major">Current/Intended Minor</label>
+                                <div class="col-md-4">
+                                    <input id="minor" name="minor" type="text" placeholder="Minor" class="form-control input-md">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="year">Year</label>
+                                <div class="col-md-4">
+                                    <select id="year" name="year" class="form-control">
+                                        <option value="Freshman">Freshman</option>
+                                        <option value="Sophomore">Sophomore</option>
+                                        <option value="Junior">Junior</option>
+                                        <option value="Senior">Senior</option>
+                                        <option value="Beyond senior">Beyond senior</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="ideal">Ideal study group</label>
+                                <div class="col-md-4">                     
+                                    <textarea class="form-control" id="ideal" name="ideal">Please describe yourself here</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="password">Change password</label>
+                                <div class="col-md-4">
+                                    <input id="password" name="password" type="password" placeholder="password" class="form-control input-md">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="confirmpassword">Confirm Password</label>
+                                <div class="col-md-4">
+                                    <input id="confirmpassword" name="confirmpassword" type="password" placeholder="confirm password" class="form-control input-md">
+                                </div>
+                            </div>
+                            <button type="submit" name="signup" value="signup" class="btn btn-info" style="margin:20px 0px 20px 0px;">Sign up</button>
+                        </form>
+                        {% if form.errors %}
+                        <p>Fields not properly filled out. Please try again.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
