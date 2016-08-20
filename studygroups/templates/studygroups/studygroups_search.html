@@ -21,18 +21,24 @@
 			position:coordinates,
 			map: map,
 			title: "{{studygroup.location.name}}",
-			icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld={{forloop.counter}}|FF0000|000000'
+			icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld={{forloop.counter}}|FF0000|000000',
+			url: "http://maps.google.com/maps?daddr=" + lat + "," + lon
+		});
+		google.maps.event.addListener(marker, 'click', function() {
+			window.location.href = this.url
 		});
 		{% endfor %}
 }
 initialize();
 $(document).ready(function(){
     $(".toggle-info").click(function(){
+    	var SH = this.SH^=1; // "Simple toggler"
         $(this).children(".search-info").slideToggle();
+        $(this).children(".toggle-show").html(SH?"Hide details":"Show details");
     });
 });
 </script>
-<div>Search results</div>
+<div style="padding-top:10px;">Search results</div>
 {% for studygroup in studygroups %}
     <div>
         <hr/>
@@ -47,7 +53,7 @@ $(document).ready(function(){
                 <div>Start time {{studygroup.stat_time}}</div>
                 <div>End time {{studygroup.end_time}}</div>
             </div>
-             hide / show button click me
+            <span class="toggle-show">Show details</span>
         </div>
     </div>
 {% endfor %}
@@ -57,4 +63,4 @@ $(document).ready(function(){
 <hr>
 <div> No active study groups for that class </div>
 
-{% endif %}
+% endif %}
