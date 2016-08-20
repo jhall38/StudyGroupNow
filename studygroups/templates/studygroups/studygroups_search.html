@@ -43,16 +43,17 @@ $(document).ready(function(){
     <div>
         <hr/>
         <div><b>{{ forloop.counter }}.</b> {{studygroup.name}}</div>
-        <div>{{studygroup.course_code}}</div>
+        <div><b>Creator:</b><a href="{% url 'profile' studygroup.manager.username %}" target="_blank"> {{studygroup.manager.username}}</a></div>
         <div class="toggle-info">
             <div class="search-info">
-		<div>{{studygroup.location.name}}</div>
-                <div>{{studygroup.location.address}}</div>
-                <div>{{studygroup.description}}</div>
-                <div><a href="{% url 'profile' studygroup.manager.username %}" target="_blank">{{studygroup.manager.username}}</a></div>
-                <div>Start time {{studygroup.stat_time}}</div>
-                <div>End time {{studygroup.end_time}}</div>
+            	<div><b>Email:</b><a href="mailto:{{studygroup.manager.email}}"> {{studygroup.manager.email}}</a></div>
+            	<div><b>Course:</b> {{studygroup.course_code}}</div>
+				<div><b>Location:</b> {{studygroup.location.name}}</div>
+                <div><b>Address:</b> {{studygroup.location.address}}</div>
+				<div><b>Description:</b> {{studygroup.description}}</div>
             </div>
+            <div><b>Start time:</b> {{studygroup.start_time}}</div>
+            <div><b>End time:</b> {{studygroup.end_time}}</div>
             <span class="toggle-show">Show details</span>
         </div>
     </div>

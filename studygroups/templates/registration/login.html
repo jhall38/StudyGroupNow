@@ -7,24 +7,39 @@
 {% endblock %}
 
 {% block body %}
+<script type="text/javascript">
+    function validateLogin() {
+    var username = document.forms["login"]["username"];
+    var password = document.forms["login"]["password"];
+    if (username.value == null || username.value == "") {
+        document.getElementById("errors").innerHTML = "Please enter a username!";
+        //alert("Please enter a username");
+        return false;
+    } else if (password.value == null || password.value == "") {
+         document.getElementById("errors").innerHTML = "Please enter a password!";
+        return false;
+    }
+}
+
+</script>
 
         <div class="container">
             <div class="row">
                 <div class="login-main-image">
                     <div class="login-wrapper fadeInUp">
-                        <form class="form-horizontal" method="post" action="{% url 'login' %}">
+                        <form name="login" id="login" class="form-horizontal" method="post" onsubmit="return validateLogin()" action="{% url 'login' %}">
                             {% csrf_token %}
                                 <legend>Log in</legend>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="email">Username</label>
                                     <div class="col-md-4">
-                                        <input id="id_username" name="username" type="text" placeholder="Username" class="form-control input-md" required> 
+                                        <input id="id_username" name="username" type="text" placeholder="Username" class="form-control input-md"> 
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="password">Password</label>
                                     <div class="col-md-4">
-                                        <input id="id_password" name="password" type="password" placeholder="password" class="form-control input-md" required>
+                                        <input id="id_password" name="password" type="password" placeholder="password" class="form-control input-md">
                                     </div>
                                 </div>
                                <input type="submit" name="login" value="Login!" class="btn btn-info" style="margin:20px 0px 20px 0px;"/> <input type="hidden" name="next" value="{{ next }}" />
@@ -33,6 +48,8 @@
                     </div>
                 </div>
             </div>
+            <br/>
+            <div id="errors" class="text-center"></div>
             {% if form.errors %}
             <div class="row">
                 <div class="col-md-12">
