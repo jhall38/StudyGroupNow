@@ -13,8 +13,8 @@ from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView
 from .forms import UserForm
-#import geopy
-#from geopy.geocoders import GoogleV3
+import geopy
+from geopy.geocoders import GoogleV3
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -86,13 +86,12 @@ def new_location(request):
 	if request.method == "POST":
 		location = Location()
 		location.name = request.POST['new_location_name']
-		location.address = request.POST['new_location_address']
-	#	geolocator = GoogleV3(api_key="AIzaSyBO2lWgBphsJzNOfFxsJHgtuJ9zQoE7zTU")
-	#	geocode = geolocator(request.POST['new_location_address'] + ' Seattle WA USA')
-	#	location.lat = geocode.latitude
-	#	location.lon = geocode.longitude
-	#	location.save()
-	#	print(location.address + ' ' location.lat + ' ' + location.lon + ' ' geocode.address
+		geolocator = GoogleV3(api_key="AIzaSyBO2lWgBphsJzNOfFxsJHgtuJ9zQoE7zTU")
+		geocoded = geolocator.geocode(request.POST['new_location_address'] + ' Seattle WA USA 98105')
+		location.lat = geocoded.latitude
+		location.lon = geocoded.longitude
+		location.address = geocoded.address
+		location.save()
 	locations = Location.objects.values_list('name', flat=True)
 	return render(request, 'studygroups/locations.html', {'locations' : locations})
 def delete(request, pk):
@@ -144,6 +143,7 @@ class UserFormView(View):
 			user.save()
 			profile = UserInfo()
 			profile.user = user
+			profile.email_public = user.email
 			profile.save()
 			user = authenticate(username=username, password=password)
 			if user is not None:
@@ -152,7 +152,7 @@ class UserFormView(View):
 					return redirect('index')
 		return render(request, self.template_name, {'form': form})
 
-@login_required(login_url='/login/')
+@login_required(login_url='login/')
 def edit_profile(request):
 	return render(request, 'studygroups/edit_profile.html', {'profile' : UserInfo.objects.filter(user=request.user)[0]})
 

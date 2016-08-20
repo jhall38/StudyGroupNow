@@ -14,7 +14,7 @@ $(function(){
 	$('#newlocation').click(function(){
 		$.ajax({
 			type: "POST",
-			url: "new_location/",
+			url: "/new_location/",
 			data: {
 				'new_location_name' : $('#location_name').val(),
 				'new_location_address' : $('#location_address').val(),
@@ -40,9 +40,8 @@ function searchSuccess(data, textStatus, jqXHR){
 }
 
 function newLocationSuccess(data, textStatus, jqXHR){
+	$('#newlocation_div').hide();	
 	$('#locations').html(data);
 	$('#locations').val($('#location_name').val());
 }
-
-
 
