@@ -11,23 +11,22 @@
                     		<div class="text1"></div>
 				{% if studygroup %}
 				<ul>
-					<li>Make this pretty!!!</li>
+					<li>{{studygroup.name}}</li>
 					<li>{{studygroup.course_code}}</li>
 					<li>{{studygroup.location.name}}</li>
 					<li>{{studygroup.location.address}}</li>
-					<li>{{studygroup.location_desc}}</li>
-					<li>{{studygroup.end_date}}</li>
+					<li>{{studygroup.description}}</li>
+					<li>{{studygroup.start_time.date|date:'SHORT_DATE_FORMAT'}} {{studygroup.start_time.time|time:'H:i'}}</li>
+					<li>{{studygroup.end_time.date|date:"SHORT_DATE_FORMAT"}} {{studygroup.end_time.time|time:"H:i"}}</li>
 				</ul>
-				<a href={% url 'add_or_edit' %}><button class="btn btn-primary">Edit Study Group</button></a>
-				<a href={% url 'delete' %}><button class="btn btn-primary">End Study Group</button></a>
-				{% else %}
-				<h2>No Study Groups to Manage</h2>
-				<a href={% url 'add_or_edit' %}><button class="btn btn-primary">Start a Study Group Now!</button></a>
+				<a href="{% url 'edit' studygroup.pk %}"><button class="btn btn-primary">Edit Study Group</button></a>
+				<a href="{% url 'delete' studygroup.pk %}"><button class="btn btn-primary">End Study Group</button></a>
 				{% endif %}
-				
+				<a href="{% url 'active_groups' %}"><button class="btn btn-primary">Back</button></a>
 			</div>
 		</div>
 	</div>
 </div>
 
 {% endblock %}
+			

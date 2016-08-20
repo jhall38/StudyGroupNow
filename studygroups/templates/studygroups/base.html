@@ -30,11 +30,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% block nav %}
                     <li role="separator" class="divider"><a href="{% url 'index' %}">Find Study Groups</a></li>
-                    {% if active_studygroup %}
-                    <li><a href="{% url 'manage' %}">Manage Study Group</a></li>
-                    {% else %}
-                    <li><a href="{% url 'add_or_edit' %}">Add Study Groups</a></li>
-                    {% endif %}
+                    <li><a href="{% url 'active_groups' %}">My Study Groups</a></li>
                     <li><a href="{% url 'my_profile' %}">Profile</a></li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                     {% endblock %}

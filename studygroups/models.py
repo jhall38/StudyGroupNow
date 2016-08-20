@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.files.storage import default_storage
+import datetime
 
 class Location(models.Model):
 	name = models.CharField(max_length=50)
@@ -10,12 +11,12 @@ class Location(models.Model):
 	lon = models.FloatField()
 
 class StudyGroup(models.Model):
+	name = models.CharField(max_length=20)
 	manager = models.ForeignKey('auth.User')
 	location = models.ForeignKey(Location)
 	course_code = models.CharField(max_length=15)
 	description = models.CharField(max_length=500)
-	location_desc = models.CharField(max_length=500)
-	start_time = models.DateTimeField(auto_now_add=True)
+	start_time = models.DateTimeField(default=datetime.datetime.now)
 	end_time = models.DateTimeField()
 
 class UserInfo(models.Model):

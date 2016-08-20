@@ -7,17 +7,25 @@
 <script>
 	$(function() {
 		{% if studygroup %}
+		$('#name').val("{{studygroup.name}}");
 		$('#course').val("{{studygroup.course_code}}");
 		$("#locations").val("{{studygroup.location.name}}")[0];
 		$('select').change();
-		$('#description').val("{{studygroup.location_desc}}");
-		var date = "{{studygroup.end_time.date|date:"SHORT_DATE_FORMAT"}}";
-		date = date.substring(6) + "/" + date.substring(0,5);
-		date = date.replace('/','-');
-		date = date.replace('/','-');
-		$('#enddate').val(date);
-		var time = "{{ studygroup.end_time.time|time:"H:i"}}";
-		$('#endtime').val(time);
+		$('#description').val("{{studygroup.description}}");
+		var start_date = "{{studygroup.start_time.date|date:"SHORT_DATE_FORMAT"}}";
+		start_date = start_date.substring(6) + "/" + start_date.substring(0,5);
+		start_date = start_date.replace('/','-');
+		start_date = start_date.replace('/','-');
+		$('#startdate').val(start_date);
+		var start_time = "{{ studygroup.start_time.time|time:"H:i"}}";
+		$('#starttime').val(start_time);
+		var end_date = "{{studygroup.end_time.date|date:"SHORT_DATE_FORMAT"}}";
+		end_date = end_date.substring(6) + "/" + end_date.substring(0,5);
+		end_date = end_date.replace('/','-');
+		end_date = end_date.replace('/','-');
+		$('#enddate').val(end_date);
+		var end_time = "{{ studygroup.end_time.time|time:"H:i"}}";
+		$('#endtime').val(end_time);
 		{% endif %}	
 	});
 </script>
@@ -28,10 +36,13 @@
             <div class="login-main-image">
                 <div class="login-wrapper fadeInUp">
                     <div class="text1"></div>
-                        <form class="form-horizontal" method="post" action="{% url 'submit_add_edit' %}">
+                        <form class="form-horizontal" method="post" action="{% if studygroup %}{% url 'submit_edit' studygroup.pk %}{% else %}{% url 'submit_add' %}{% endif %}">
 				{% csrf_token %}
 				<div class="row">
-                        	<legend>{% if active_studygroup %}Edit Study Group{% else %}Add Study Group{% endif %}</legend>
+                        	<legend>{% if studygroup %}Edit Study Group{% else %}Add Study Group{% endif %}</legend>
+				<div class="col-md-4 center-block" style="float: none;">
+					<label class="control-label" for="name">Name</label>
+					<input id="name" name="name" class="form-control" type="text" placeholder="Name your Study Group! (max 20 chars)">
                         	<div class="col-md-4 center-block" style="float: none;">
                                 	<label class="control-label" for="classes">Class</label>  
                                         <input id="course" list="classes" name="course" placeholder="class" class="form-control input-md">
@@ -64,6 +75,23 @@
                                     <textarea rows="4" class="form-control" id="description" name="description" placeholder="Description (Describe any details about the study group, example: Bring your laptop and we will be in room 300 in the back corner...)"></textarea>
                                </div>
                         </div>
+			{% if not studygroup %}
+			<div class="row">
+				<p class="col-md-12"><input type="checkbox" id="now" name="now">Start now! (grey the start fields out if checked)</p>
+			</div>
+			{% endif %}
+			<div class="row">
+				<div class="col-md-4 center-block" style="float: none;">
+					<label class="control-label" for="startdate">Start Date</label>
+					<input id="startdate" type="date" name="startdate" class="form-control input-md">
+				</div>
+			</div>
+			<div class="row">
+                                <div class="col-md-4 center-block" style="float: none;">
+                                	<label class="control-label" for="starttime">Start time</label>
+                                	<input id="starttime" type="time" name="starttime" class="form-control input-md">
+                      		</div>
+			</div>
 			<div class="row">
 				<div class="col-md-4 center-block" style="float: none;">
 					<label class="control-label" for="enddate">End Date</label>
@@ -78,7 +106,7 @@
 			</div>
 			<div class="row">
 				<div class="col-4 center-block" style="float: none;">
-                                	<button type="submit" name="add" value="add" class="btn btn-info" style="margin:20px 0px 20px 0px;">{% if active_studygroup %}Edit Study Group{% else %}Add Study Group{% endif %}</button>
+                                	<button type="submit" name="add" value="add" class="btn btn-info" style="margin:20px 0px 20px 0px;">{% if studygroup %}Edit Study Group{% else %}Add Study Group{% endif %}</button>
 				</div>
 			</div>
 			</form>

@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.http import HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django import forms
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
@@ -21,7 +22,7 @@ from django.contrib.auth.forms import UserCreationForm
 #	def get_queryset(self):
 #		return StudyGroup.objects.all()
 
-@login_required(login_url='/login/')
+@login_required(login_url='login/')
 def index(request):
 	if not StudyGroup.objects.filter(manager=request.user).exists():
 		return render(request, 'studygroups/index.html', {'active_studygroup' : False})
@@ -40,33 +41,39 @@ def search_studygroups(request):
 def load_courses(request):
 	course_codes = StudyGroup.objects.values_list('course_code', flat=True).distinct()
 	return render(request, 'studygroups/course_codes.html', {'course_codes' : course_codes})
-def manage(request):
-	if StudyGroup.objects.filter(manager=request.user).exists():
-		return render(request, 'studygroups/manage.html', {'studygroup' : StudyGroup.objects.filter(manager=request.user)[0], 'active_studygroup' : True})
-	else:
-		return render(request, 'studygroups/manage.html')
-
-def add_or_edit(request):
-	if StudyGroup.objects.filter(manager=request.user).exists():
-		print("printyprint: " + StudyGroup.objects.filter(manager=request.user)[0].course_code)
-		return render(request, 'studygroups/add_or_edit.html', {'studygroup': StudyGroup.objects.filter(manager=request.user)[0], 'active_studygroup': True})
-	else:
-		return render(request, 'studygroups/add_or_edit.html')
-
-def submit_add_edit(request):
-	if not StudyGroup.objects.filter(manager=request.user).exists():
-		studygroup = StudyGroup()
-	else:
-		studygroup = StudyGroup.objects.filter(manager=request.user)[0]
-
+def manage(request, pk):
+	studygroup = get_object_or_404(StudyGroup, pk=pk)
+	return render(request, 'studygroups/manage.html', {'studygroup' : studygroup})
+def active(request):
+	active_groups = StudyGroup.objects.filter(manager=request.user)
+	return render(request, 'studygroups/active.html', {'active_groups' : active_groups})
+def add(request):
+	return render(request, 'studygroups/add_or_edit.html')
+def submit_add(request):
+	studygroup = StudyGroup()
+	studygroup.name = request.POST['name']
 	studygroup.course_code = request.POST['course']
 	studygroup.location = Location.objects.filter(name = request.POST['location'])[0]
-	studygroup.location_desc = request.POST['description']
-	print(request.POST['enddate'])
+	studygroup.description = request.POST['description']
+	if not 'now' in request.POST:
+		studygroup.start_time = request.POST['startdate'] + ' ' + request.POST['starttime']
 	studygroup.end_time = request.POST['enddate'] + ' ' + request.POST['endtime']
 	studygroup.manager = request.user
 	studygroup.save()
-	return render(request, 'studygroups/manage.html', {'studygroup': StudyGroup.objects.filter(manager=request.user)[0], 'active_studygroup': True})
+	return HttpResponseRedirect('/active/manage/%s' % studygroup.pk)
+def edit(request, pk):
+	studygroup = get_object_or_404(StudyGroup, pk=pk)
+	return render(request, 'studygroups/add_or_edit.html', {'studygroup' : studygroup})
+def submit_edit(request, pk):
+	studygroup = get_object_or_404(StudyGroup, pk=pk)
+	studygroup.name = request.POST['name']	
+	studygroup.course_code = request.POST['course']
+	studygroup.location = Location.objects.filter(name = request.POST['location'])[0]
+	studygroup.description = request.POST['description']
+	studygroup.end_time = request.POST['enddate'] + ' ' + request.POST['endtime']
+	studygroup.manager = request.user
+	studygroup.save()
+	return HttpResponseRedirect('/active/manage/%s' % pk)
 def load_locations(request):
 	locations = Location.objects.values_list('name', flat=True)
 	if StudyGroup.objects.filter(manager=request.user).exists():
@@ -81,10 +88,12 @@ def new_location(request):
 		location.save()
 	locations = Location.objects.values_list('name', flat=True)
 	return render(request, 'studygroups/locations.html', {'locations' : locations})
-def delete(request):
-	if StudyGroup.objects.filter(manager=request.user).exists():
-		StudyGroup.objects.filter(manager=request.user)[0].delete()
-	return render(request, 'studygroups/index.html')
+def delete(request, pk):
+	studygroup = get_object_or_404(StudyGroup, pk=pk)
+	if studygroup.manager.pk is not request.user.pk:
+		return HttpResponseForbidden()
+	studygroup.delete()
+	return HttpResponseRedirect('/active/')
 def signup(request):
 	return render(request, 'studygroups/signup.html')
 def signup_submit(request):
@@ -94,23 +103,13 @@ def signup_submit(request):
 	new_user.email = request.POST['email']
 	new_user.save()
 	return render(request, 'studygroups/edi_profile.html')
+@login_required(login_url="login/")
 def my_profile(request):
 	return render(request, 'studygroups/profile.html', {'this_profile' : UserInfo.objects.filter(user=request.user)[0], 'is_this_user' : True})
 def edit_profile(request):
 	return render(request, 'studygroups/edit_profile.html')
-#def register(request):
-#    if request.method == 'POST':
-#        form = UserCreationForm(request.POST)
-#        if form.is_valid():
-#            new_user = form.save()
-#            return HttpResponseRedirect("/books/")
-#    else:
-#        form = UserCreationForm()
-#    return render(request, "registration/register.html", {
-#        'form': form,
-#    })
 
-@login_required(login_url='/login/')
+@login_required(login_url='login/')
 def profile(request, username):
 	this_user = get_object_or_404(User, username=username)
 	print(this_user.username)
@@ -145,9 +144,6 @@ class UserFormView(View):
 					login(request, user)
 					return redirect('index')
 		return render(request, self.template_name, {'form': form})
-#class UserInfoUpdate(UpdateView):
-#	model UserInfo
-
 
 @login_required(login_url='/login/')
 def edit_profile(request):
@@ -168,4 +164,4 @@ def submit_edit_profile(request):
 	if 'image' in request.FILES:
 		profile.profile_pic = request.FILES['image']
 	profile.save()
-	return render(request, 'studygroups/profile.html', {'this_profile' : UserInfo.objects.filter(user=request.user)[0], 'is_this_user' : True})
+	return HttpResponseRedirect('/my_profile/')
