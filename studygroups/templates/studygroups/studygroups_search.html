@@ -39,7 +39,8 @@ $(document).ready(function(){
     <div>
         <hr/>
         <div><b>{{ forloop.counter }}.</b> {{studygroup.location.address}}</div>
-        <div><div><b>Creator:</b> {{studygroup.manager.username}}</div></div>
+        <!-- Create link for user profile in line below-->
+        <div><b>Creator:</b><a href="#" target="_blank"> {{studygroup.manager.username}}</a></div>
         <div class="toggle-info">
             <div class="search-info">
             	<div><b>Course:</b> {{studygroup.course_code}}</div>
@@ -58,11 +59,3 @@ $(document).ready(function(){
 <div> No active study groups for that class </div>
 
 {% endif %}
-
-<!-- <hr>
-	<div>{{studygroup.course_code}}</div>
-	<div>{{studygroup.location.name}}</div>
-	<div>{{studygroup.location.address}}</div>
-	<div>{{studygroup.location_desc}}</div>
-	<div>{{studygroup.manager.username}}</div>
-	<div> ... </div>-->
