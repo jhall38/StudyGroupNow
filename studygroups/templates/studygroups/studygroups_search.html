@@ -21,7 +21,11 @@
 			position:coordinates,
 			map: map,
 			title: "{{studygroup.location.name}}",
-			icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld={{forloop.counter}}|FF0000|000000'
+			icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld={{forloop.counter}}|FF0000|000000',
+			url: "http://maps.google.com/maps?daddr=" + lat + "," + lon
+		});
+		google.maps.event.addListener(marker, 'click', function() {
+			window.location.href = this.url
 		});
 		{% endfor %}
 }
@@ -43,6 +47,7 @@ $(document).ready(function(){
         <div><b>Creator:</b><a href="#" target="_blank"> {{studygroup.manager.username}}</a></div>
         <div class="toggle-info">
             <div class="search-info">
+            	<div><b>Email:</b> Email adderess</div>
             	<div><b>Course:</b> {{studygroup.course_code}}</div>
                 <div><b>Description:</b> {{studygroup.location_desc}}</div>
             </div>
