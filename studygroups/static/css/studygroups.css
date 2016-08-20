@@ -19,9 +19,14 @@
     display:none;
 }
 
+.toggle-show {
+    font-weight: bold;
+}
+
 .grey-box {
     background-color: #CCCCCC;
-    text-align: center;
+    padding-left: 10px;
+    margin-bottom: 40px;
 }
 
 .white-box {
@@ -85,6 +90,7 @@
     }
 
     .grey-box {
+        margin-top: 20px;
         width: 100%;
     }
 }
@@ -97,6 +103,7 @@
     }
 
     .grey-box {
+        margin-top: 20px;
         width: 600px;
     }
 }
@@ -111,6 +118,8 @@
     .grey-box {
         margin-top: 70px;
         width: 300px;
+        max-height: 600px;
+        overflow: auto;
     }
 
     .search-input {
@@ -133,5 +142,7 @@
     .grey-box {
         margin-top: 70px;
         width: 300px;
+        max-height: 700px;
+        overflow: auto;
     }
 }

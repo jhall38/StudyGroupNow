@@ -28,25 +28,26 @@
 initialize();
 $(document).ready(function(){
     $(".toggle-info").click(function(){
+    	var SH = this.SH^=1; // "Simple toggler"
         $(this).children(".search-info").slideToggle();
+        $(this).children(".toggle-show").html(SH?"Hide details":"Show details");
     });
 });
 </script>
-<div>Search results</div>
+<div style="padding-top:10px;">Search results</div>
 {% for studygroup in studygroups %}
     <div>
         <hr/>
-        <div><b>{{ forloop.counter }}.</b> {{studygroup.location.name}}</div>
-        <div>{{studygroup.course_code}}</div>
+        <div><b>{{ forloop.counter }}.</b> {{studygroup.location.address}}</div>
+        <div><div><b>Creator:</b> {{studygroup.manager.username}}</div></div>
         <div class="toggle-info">
             <div class="search-info">
-                <div>{{studygroup.location.address}}</div>
-                <div>{{studygroup.location_desc}}</div>
-                <div>{{studygroup.manager.username}}</div>
-                <div>Start time {{studygroup.stat_time}}</div>
-                <div>End time {{studygroup.end_time}}</div>
+            	<div><b>Course:</b> {{studygroup.course_code}}</div>
+                <div><b>Description:</b> {{studygroup.location_desc}}</div>
             </div>
-             hide / show button click me
+            <div><b>Start time:</b> {{studygroup.stat_time}}</div>
+            <div><b>End time:</b> {{studygroup.end_time}}</div>
+            <span class="toggle-show">Show details</span>
         </div>
     </div>
 {% endfor %}
