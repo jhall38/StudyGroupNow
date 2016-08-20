@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.template import Template, RequestContext
 #from django.core.context_processors import csrf
-from .models import StudyGroup, UserInfo, Location, User
+from .models import StudyGroup, UserInfo, Location
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.http import HttpResponseRedirect
@@ -38,7 +39,6 @@ def search_studygroups(request):
 
 def load_courses(request):
 	course_codes = StudyGroup.objects.values_list('course_code', flat=True).distinct()
-	print(course_codes)
 	return render(request, 'studygroups/course_codes.html', {'course_codes' : course_codes})
 def manage(request):
 	if StudyGroup.objects.filter(manager=request.user).exists():
@@ -93,7 +93,11 @@ def signup_submit(request):
 	new_user.password = request.POST['password']
 	new_user.email = request.POST['email']
 	new_user.save()
-	return render(request, 'studygroups/index.html')
+	return render(request, 'studygroups/edi_profile.html')
+def my_profile(request):
+	return render(request, 'studygroups/profile.html', {'this_profile' : UserInfo.objects.filter(user=request.user)[0], 'is_this_user' : True})
+def edit_profile(request):
+	return render(request, 'studygroups/edit_profile.html')
 #def register(request):
 #    if request.method == 'POST':
 #        form = UserCreationForm(request.POST)
@@ -107,9 +111,11 @@ def signup_submit(request):
 #    })
 
 @login_required(login_url='/login/')
-def profile(request, pk):
-	this_user = get_object_or_404(User, pk=pk)
-	this_profile = get_object_or_404(UserInfo, user=this_user)
+def profile(request, username):
+	this_user = get_object_or_404(User, username=username)
+	print(this_user.username)
+	print(UserInfo.objects.filter(user__username=this_user.username))
+	this_profile = get_object_or_404(UserInfo, user=this_user.id)
 	return render(request, 'studygroups/profile.html', {'this_profile' : this_profile})
 
 class UserFormView(View):
@@ -130,6 +136,9 @@ class UserFormView(View):
 			password = form.cleaned_data['password']
 			user.set_password(password)
 			user.save()
+			profile = UserInfo()
+			profile.user = user
+			profile.save()
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				if user.is_active:
@@ -142,7 +151,21 @@ class UserFormView(View):
 
 @login_required(login_url='/login/')
 def edit_profile(request):
-	return render(request, {'user' : request.user})
+	return render(request, 'studygroups/edit_profile.html', {'profile' : UserInfo.objects.filter(user=request.user)[0]})
 
 def submit_edit_profile(request):
-	
+	profile = UserInfo.objects.filter(user=request.user)[0]
+	profile.first_name = request.POST['first_name']
+	profile.last_name = request.POST['last_name']
+	profile.email_public = request.POST['email']
+	profile.phone_number = request.POST['phone']
+	profile.year = request.POST['year']
+	profile.major = request.POST['major']
+	profile.minor = request.POST['minor']
+	profile.bio = request.POST['about']
+	profile.facebook_link = request.POST['facebook']
+	profile.ideal_study_group = request.POST['ideal']
+	if 'image' in request.FILES:
+		profile.profile_pic = request.FILES['image']
+	profile.save()
+	return render(request, 'studygroups/profile.html', {'this_profile' : UserInfo.objects.filter(user=request.user)[0], 'is_this_user' : True})

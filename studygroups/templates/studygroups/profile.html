@@ -2,14 +2,110 @@
 {% load staticfiles %}
 {% block title %}Profile{% endblock %}
 
-
 {% block body %}
+<div class="col-xs-12" style="height:70px;"></div>
+<div class="container">
+      <div class="col-md-8 col-md-offset-2">
+      <div class="row">
+	{% if this_profile.profile_pic %} 
+	<div class="col-md-4 col-md-offset-1">
+          <img src="{{this_profile.profile_pic.url}}" 
+            alt="profile pic" style="width:225px;height:270px;"/>
+	</div>
+	{% endif %}	
+        <div class="col-md-4">
+          <div style="font-size:15pt;padding-top:10px;margin-bottom:20px;margin-left:20px;">
+            <img src="http://metro.kingcounty.gov/up/spclevent/huskies/images/uw_logo.png"
+                alt="pc1" style="width:42px;height:29px;"/> {{ this_profile.user.username }}
+          </div>
+	  {% if this_profile.first_name %}
+          <div>
+            <strong>Name: </strong>
+            {{ this_profile.first_name }}{% if this_profile.last_name %} {{ this_profile.last_name }}{% endif %}
+          </div>
+	  {% endif %}
+	  {% if this_profile.email_profile %}
+          <div>
+            <strong>Email: </strong>
+            {{ this_profile.email_profile }}
+          </div>
+	  {% endif %}
+	  {% if this_profile.phone_number %}
+          <div>
+            <strong>Phone: </strong>
+            {{ this_profile.phone_number }}
+          </div>
+	  {% endif %}
+	  {% if this_profile.facebook_link %}
+          <div>
+            <strong>Facebook: </strong>
+            {{ this_profile.facebook_link }}
+          </div>
+	  {% endif %}
+        </div>
+      </div>
+      <div class="row">
+        <div style="margin-bottom:30px;"></div>
+        <div class="col-md-12">
+	  {% if this_profile.bio %}
+          <div style="font-size:15pt;padding-top:5px;margin-bottom:5px;">
+            About
+          </div>
+          <hr style="margin-bottom:10px;margin-top:10px;"/>
+          <div style="text-muted;margin-bottom:15px;">
+	  {{ this_profile.bio }}
+          </div>
+	  {% endif %}
+	  {% if this_profile.year or this_profile.major or this_profile.minor %}
+          <div style="font-size:15pt;padding-top:5px;margin-bottom:5px;">
+            Academic Information
+          </div>
+          <hr style="margin-bottom:10px;margin-top:10px;"/>
 
-
-
-
-
-
-
-
+          <div class="row">
+            <div class="col-md-6">
+             <!-- <div>
+                <strong>Area of study: </strong>
+                  Computers
+              </div> -->
+	    {% if this_profile.year %} 
+	    <div>
+                <strong>Year: </strong>
+                {{ this_profile.year }}
+            </div>
+	    {% endif %}
+            </div>
+            <div class="col-md-6">
+	      {% if this_profile.major %}
+              <div>
+                <strong>Current/Intended Major: </strong>
+                {{ this_profile.major }}
+              </div>
+	      {% endif %}
+	      {% if this_profile.minor %}
+              <div>
+                <strong>Current/Intended Minor: </strong>
+                {{ this_profile.minor }}
+              </div>
+	      {% endif %}
+            </div>
+          </div>
+	  {% endif %}
+      {% if this_profile.ideal_study_group %} 
+      <div style="margin-bottom:20px;"></div>
+      <div style="margin-bottom:20px;"></div>
+        <div style="font-size:15pt;padding-top:5px;margin-bottom:5px;">
+          Ideal study group
+        </div>
+        <hr style="margin-bottom:10px;margin-top:10px;"/>
+        <div style="text-muted;margin-bottom:15px;">
+        {{ this_profile.idea_study_group }}
+	</div>
+      </div>
+      </div> 
+        {% endif %}
+	{% if is_this_user %}
+	<a href="{% url 'edit_profile' %}"><button class="btn btn-primary center-block">Edit</button></a>
+	{% endif %}
+    </div> <!-- close container-->
 {% endblock %}

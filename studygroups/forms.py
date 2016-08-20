@@ -8,4 +8,4 @@ class UserForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = {'email', 'username', 'password'}
-		fields_order = ['email', 'username', 'password']
+		fields_order = ['username', 'email', 'password']
