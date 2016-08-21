@@ -11,10 +11,10 @@
 	<div class="col-md-4 col-md-offset-1">
     {% if this_profile.profile_pic %} 
           <img src="{{this_profile.profile_pic.url}}" 
-            alt="profile pic" style="width:225px;height:270px;"/>
+            alt="profile pic" style="max-width:225px;max-height:270px;"/>
             {% else %}
             <img src="{% static 'image_not_available.jpg' %}" 
-            alt="profile pic" style="width:225px;height:270px;"/>
+            alt="profile pic" style="max-width:225px;max-height:270px;"/>
             {% endif %}
 	</div>
         <div class="col-md-4">
