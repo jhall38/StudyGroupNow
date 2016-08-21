@@ -8,8 +8,24 @@
 <script src="{% static "js/studygroups.js" %}"></script>
 {% endblock %}
 
-
 {% block body %}
+<script type="text/javascript">
+  /*  $(document).ready(function(){
+    $("#search_courses").click(function(){S
+        var course = document.getElementById("search");
+        var regex = /^[A-Z]{3,4}\s\d{2,4}[A-Z]{0,1}$/i;
+        if (course.value == null || course.value == "" || course.value.search(regex) == -1){
+            //$("#googleMap").html("Please enter a valid class or course name!");
+            document.getElementById("errors").innerHTML = "Please enter a valid class or course name!";
+            alert("click")
+            $(".errors").show();
+            $(".grey-box").hide();
+        } else {
+            $(".grey-box").show();
+        }
+    });
+});*/
+</script>
 
     <div class="container">
         <div class="row">
@@ -25,6 +41,7 @@
                         </ul>
                     </div>
                 </div>
+                <div class="errors">Please enter a valid a class or course!</div>
                     <div id="googleMap"></div>
             </div>
             <div class="col-md-4 split-display">

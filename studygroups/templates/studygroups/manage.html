@@ -10,15 +10,14 @@
                 	<div class="login-wrapper fadeInUp">
                     		<div class="text1"></div>
 				{% if studygroup %}
-				<ul>
-					<li>{{studygroup.name}}</li>
-					<li>{{studygroup.course_code}}</li>
-					<li>{{studygroup.location.name}}</li>
-					<li>{{studygroup.location.address}}</li>
-					<li>{{studygroup.description}}</li>
-					<li>{{studygroup.start_time.date|date:'SHORT_DATE_FORMAT'}} {{studygroup.start_time.time|time:'H:i'}}</li>
-					<li>{{studygroup.end_time.date|date:"SHORT_DATE_FORMAT"}} {{studygroup.end_time.time|time:"H:i"}}</li>
-				</ul>
+					<div><b>{{studygroup.name}}</b></div>
+					<div><b>Course:</b> {{studygroup.course_code}}</div>
+					<div><b>Location:</b> {{studygroup.location.name}}</div>
+	                <div><b>Address:</b> {{studygroup.location.address}}</div>
+					<div><b>Description:</b> {{studygroup.description}}</div>
+					<div><b>Start time:</b> {{studygroup.start_time.date|date:'SHORT_DATE_FORMAT'}} {{studygroup.start_time.time|time:'H:i'}}</div>
+					<div><b>End time:</b> {{studygroup.end_time.date|date:"SHORT_DATE_FORMAT"}} {{studygroup.end_time.time|time:"H:i"}}</div>
+					<br/>
 				<a href="{% url 'edit' studygroup.pk %}"><button class="btn btn-primary">Edit Study Group</button></a>
 				<a href="{% url 'delete' studygroup.pk %}"><button class="btn btn-primary">End Study Group</button></a>
 				{% endif %}

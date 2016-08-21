@@ -60,7 +60,6 @@
     border: 0px;
 }
 
-
 /* effects and animations */
 .fadeInUp {
     -webkit-animation: fadeInUp 1s .2s ease both;
@@ -131,6 +130,9 @@
         width: 570px;
         float: left;
     }
+    #course {
+        width:120px;
+    }
 }
 
 /* Fully expanded or larger desktop screen */
@@ -149,5 +151,9 @@
         width: 300px;
         max-height: 700px;
         overflow: auto;
+    }
+
+    #course {
+        width:120px;
     }
 }
