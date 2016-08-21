@@ -17,13 +17,13 @@
     var linkcheck = 0;
     var password = document.forms["edit"]["password"];
     var confirmpassword = document.forms["edit"]["confirmpassword"];
-    if (first_name.value == null || first_name.value == "") {
+    /*if (first_name.value == null || first_name.value == "") {
         document.getElementById("errors").innerHTML = "Please enter a first name!";
         return false;
     } else if (last_name.value == null || last_name.value == "") {
         document.getElementById("errors").innerHTML = "Please enter a last name!";
         return false;
-    } else if (email.value == null || email.value == "") {
+    } else*/ if (email.value == null || email.value == "") {
         document.getElementById("errors").innerHTML = "Please enter an email address!";
         return false;
     } else if (email.value.search(regex) == -1) {
@@ -306,7 +306,7 @@ jQuery(function($){
                                 <label class="col-md-4 control-label" for="year">Year</label>
                                 <div class="col-md-4">
                                     <select id="year" name="year" class="form-control" value="{{profile.year}}" required>
-                                        <option value="Not">Not a student</option>
+                                        <option value="Not a student">Not a student</option>
                                         <option value="Freshman">Freshman</option>
                                         <option value="Sophomore">Sophomore</option>
                                         <option value="Junior">Junior</option>
