@@ -27,22 +27,6 @@
 		var end_time = "{{ studygroup.end_time.time|time:"H:i"}}";
 		$('#endtime').val(end_time);
 		{% endif %}	
-		$('select').change(function(){
-			console.log("1");
-			var id = $(this).find("option:selected").attr("id");
-			switch (id){
-				case "other":
-					console.log("2");
-					$('#newlocation_div').show()
-					break;
-				default:
-					$('#newlocation_div').hide()
-					break;
-			}
-		});
-		$('#newlocation').click( function(){
-			$('#newlocation_div').hide();
-		});
 	});
 	$(document).ready(function(){
 		$('.add-address-field').hide();
@@ -53,27 +37,55 @@
 	        	$('.add-address-field').hide();
 	    	}
 		});
-		/*$('#now').prop('checked') {
-			$('#startdate').prop('disabled', true);
-			$('#starttime').prop('disabled'true);
-		} */ 
+		$('#now').click(function(){
+            if($(this).prop("checked") == true){
+                $('#startdate').prop('disabled', true);
+				$('#starttime').prop('disabled', true);
+            }
+            else if($(this).prop("checked") == false){
+                $('#startdate').prop('disabled', false);
+				$('#starttime').prop('disabled', false);
+            }
+        });
 	});
 	function validateAdd() {
-    var name = document.forms["add"]["name"];
-    var course = document.forms["add"]["course"];
-    var regex = /^[A-Z]{3,4}\s\d{2,4}[A-Z]{0,1}$/i;
-    var location = document.forms["add"]["location"];
-    if (name.value == null || name.value == "") {
-        document.getElementById("errors").innerHTML = "Please enter study group name!";
-        return false;
-    } else if (course.value == null || course.value == "" || course.value.search(regex) == -1) {
-        document.getElementById("errors").innerHTML = "Please enter a valid class or course name!";
-        return false;
-    } else if (location.value == null || location.value == "") {
-        document.getElementById("errors").innerHTML = "Please select a location";
-        return false;
-    }
-}
+	    var name = document.forms["add"]["name"];
+	    var course = document.forms["add"]["course"];
+	    var regex = /^[A-Z]{3,4}\s\d{2,4}[A-Z]{0,1}$/i;
+	    var location = document.forms["add"]["location"];
+	    var description = document.forms["add"]["description"];
+	    var startDate = new Date($('#startdate').val());
+		var endDate = new Date($('#enddate').val());
+		var starttime = document.forms["add"]["starttime"].value;
+		var endtime = document.forms["add"]["endtime"].value;
+		var start = starttime.split(':');
+		var end = endtime.split(':');
+		starttime = start[0] + start[1] + start[3] + start[4];
+		endtime = end[0] + end[1] + end[3] + end[4];
+		startvalue = parseInt(starttime); 
+		endvalue = parseInt(endtime);
+	    if (name.value == null || name.value == "") {
+	        document.getElementById("errors").innerHTML = "Please enter study group name!";
+	        return false;
+	    } else if (course.value == null || course.value == "" || course.value.search(regex) == -1) {
+	        document.getElementById("errors").innerHTML = "Please enter a valid class or course name!";
+	        return false;
+	    } else if (location.value == null || location.value == "") {
+	        document.getElementById("errors").innerHTML = "Please select a location";
+	        return false;
+	    } else if (description.value == null || description.value == "") {
+	        document.getElementById("errors").innerHTML = "Please enter a description!";
+	        return false;
+	    } else if (startDate > endDate) {
+			document.getElementById("errors").innerHTML = "Please check start and end dates!";
+			return false;
+		} else if (startDate - endDate == 0) {
+			if (startvalue >= endvalue) {
+				document.getElementById("errors").innerHTML = "Please check start and end times!";
+				return false;
+			}
+		}
+	}
 </script>
 {% endblock %}
 
@@ -107,9 +119,6 @@
 				<div class="col-md-4 center-block add-address-field" style="float: none;">
 				<br/>
 					<p>Please enter a name for the location along with an address</p>
-			<div id="newlocation_div" class="row" style="display:none;">
-				<div class="col-md-4 center-block" style="float: none;">
-					<legend>Add a Location</legend>
 					{% csrf_token %}
 					<label for="location_name" class="control-label">Name</label>
 					<input id="location_name" name="new_location_name" class="form-control">
