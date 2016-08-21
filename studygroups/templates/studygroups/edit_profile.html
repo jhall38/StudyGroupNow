@@ -14,6 +14,7 @@
     var regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     var phone = document.forms["edit"]["phone"];
     var facebook = document.forms["edit"]["facebook"].value;
+    var linkcheck = 0;
     var password = document.forms["edit"]["password"];
     var confirmpassword = document.forms["edit"]["confirmpassword"];
     if (first_name.value == null || first_name.value == "") {
@@ -29,10 +30,11 @@
         document.getElementById("errors").innerHTML = "Please enter a valid email address!";
         return false;
     } else if (facebook.length > 0) {
-        if (facebook.startsWith("https://facebook.com/") == false || facebook.startsWith("https://www.facebook.com/") == false) {
-            document.getElementById("errors").innerHTML = "Please enter a valid facebook address! (e.g. http://www.facebook.com/(userid)....)";
+        if (facebook.startsWith("https://facebook.com/") == true || facebook.startsWith("https://www.facebook.com/") == true || facebook.startsWith("http://facebook.com/") == true || facebook.startsWith("http://www.facebook.com/") == true) {
+        } else {
+            document.getElementById("errors").innerHTML = "Please enter a valid facebook address! (e.g. https://www.facebook.com/(userid)....)";
             return false;
-        } 
+        }
     } else if (password.value == null || password.value == "") {
          document.getElementById("errors").innerHTML = "Please enter a password!";
         return false;
