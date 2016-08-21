@@ -1,6 +1,18 @@
 from django.conf.urls import url, include
+from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
-
+from .views import (
+	StudyGroupListAPIView,
+	StudyGroupDetailAPIView,
+	StudyGroupUpdateAPIView,
+	StudyGroupDeleteAPIView,
+	StudyGroupCreateAPIView,
+	LocationListAPIView,
+	LocationCreateAPIView,
+	LocationDetailAPIView,
+	UserInfoDetailAPIView,
+	UserInfoUpdateAPIView
+	)
 urlpatterns = [
 	url(r'^$', views.index, name="index"),
 	url(r'^search/$', views.search_studygroups),
@@ -20,4 +32,16 @@ urlpatterns = [
 	url(r'^my_profile/$', views.my_profile, name='my_profile'),
 	url(r'^edit_profile/$', views.edit_profile, name="edit_profile"),
 	url(r'^edit_profile/submit/$', views.submit_edit_profile, name="submit_edit_profile"),
+	url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),	
+	url(r'^api/studygroups/$', StudyGroupListAPIView.as_view(), name='api_list_studygroups'),
+	url(r'^api/studygroups/add/$', StudyGroupCreateAPIView.as_view(), name='api_add_studygroup'),
+	url(r'^api/studygroups/(?P<pk>[0-9]+)/$', StudyGroupDetailAPIView.as_view(), name='api_detail_studygroup'),
+	url(r'^api/studygroups/(?P<pk>[0-9]+)/edit$', StudyGroupUpdateAPIView.as_view(), name='api_edit_studygroup'),
+	url(r'^api/locations/$', LocationListAPIView.as_view(), name='api_list_locations'),
+	url(r'^api/locations/add/$', LocationCreateAPIView.as_view(), name='api_add_location'),
+	url(r'^api/locations/(?P<pk>[0-9]+)/$', LocationDetailAPIView.as_view(), name='api_detail_location'),	
+	url(r'^api/profiles/(?P<user__username>[-\w\d]+)/$', UserInfoDetailAPIView.as_view(), name='api_detail_profile'),
+	url(r'^api/profiles/(?P<user__username>[-\w\d]+)/edit$', UserInfoUpdateAPIView.as_view(), name='api_edit_profile'),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

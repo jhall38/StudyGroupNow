@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.template import Template, RequestContext
-#from django.core.context_processors import csrf
 from .models import StudyGroup, UserInfo, Location
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -9,21 +8,27 @@ from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseForbidden
 from django import forms
+from ratelimit.decorators import ratelimit
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView
+from django.utils import timezone
 from .forms import UserForm
 import geopy
 from django.core.exceptions import ValidationError
 from geopy.geocoders import GoogleV3
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext as _
-
-#class StudGroupListView(generic.ListView):
-#	template_name = 'studygroups/index.html'
-	
-#	def get_queryset(self):
-#		return StudyGroup.objects.all()
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView, DestroyAPIView, CreateAPIView
+from .serializers import UserSerializer, UserInfoSerializer, UserInfoUpdateSerializer, LocationSerializer, LocationCreateSerializer, StudyGroupSerializer, StudyGroupCreateSerializer
+from rest_framework.throttling import UserRateThrottle
+from rest_framework.permissions import(
+	AllowAny,
+	IsAuthenticated,
+	IsAdminUser,
+	IsAuthenticatedOrReadOnly,
+	)
+from .permissions import IsOwnerOrReadOnlyStudyGroup, IsOwnerOrReadOnlyUserInfo
 
 @login_required(login_url='login/')
 def index(request):
@@ -186,3 +191,82 @@ def submit_studygroup(request, studygroup):
 	studygroup.manager = request.user
 	studygroup.full_clean()
 	studygroup.save()
+
+class StudyGroupListAPIView(ListAPIView):
+	queryset = StudyGroup.objects.filter(end_time__gte=datetime.now())
+	serializer_class = StudyGroupSerializer
+	permission_classes = [IsAuthenticated]
+	throttle_classes = (UserRateThrottle,)	
+
+class StudyGroupDetailAPIView(RetrieveAPIView):
+	queryset = StudyGroup.objects.filter(end_time__gte=datetime.now())
+	serializer_class = StudyGroupSerializer	
+	permission_classes = [AllowAny]
+	throttle_classes = (UserRateThrottle,)	
+
+class StudyGroupUpdateAPIView(RetrieveUpdateAPIView):
+	queryset = StudyGroup.objects.filter(end_time__gte=datetime.now())
+	serializer_class = StudyGroupCreateSerializer
+	permission_classes = [IsAuthenticated, IsOwnerOrReadOnlyStudyGroup]
+	throttle_classes = (UserRateThrottle,)	
+	def perform_update(self, serializer):
+		serializer.save(manager=self.request.user)
+
+class StudyGroupCreateAPIView(CreateAPIView):
+	queryset = StudyGroup.objects.filter(end_time__gte=datetime.now())
+	serializer_class = StudyGroupCreateSerializer	
+	permission_classes = [IsAuthenticated]
+	throttle_classes = (UserRateThrottle,)	
+	def perform_create(self, serializer):
+		if serializer.validated_data.get('end_time') < serializer.validated_data.get('start_time'): 
+			raise ValidationError(_('Your end date is sooner than your start date!'))
+		elif serializer.validated_data.get('start_time') < timezone.now():
+			raise ValidationError(_('Your starting date is in the past. You are not a time traveler!'))
+		elif (serializer.validated_data.get('end_time')-serializer.validated_data.get('start_time')).total_seconds() > 86400: 
+			raise ValidationError(_('Your studygroup can not last for more than 24 hours'))
+		if Location.objects.get(pk=serializer.validated_data.get('location_id')):			
+			serializer.save(manager=self.request.user, location=Location.objects.get(pk=serializer.validated_data.get('location_id')))
+		else:
+			raise ValidationError(_('No Location of that id exists. Remember you must use the id of an existing location.'))	
+
+class StudyGroupDeleteAPIView(DestroyAPIView):
+	queryset = StudyGroup.objects.filter(end_time__gte=datetime.now())
+	serializer_class = StudyGroupSerializer
+	permission_classes = [IsAuthenticated, IsOwnerOrReadOnlyStudyGroup]
+	throttle_classes = (UserRateThrottle,)	
+
+class LocationListAPIView(ListAPIView):
+	queryset = Location.objects.all()
+	serializer_class = LocationSerializer
+	permission_classes = [AllowAny]
+	throttle_classes = (UserRateThrottle,)	
+
+class LocationDetailAPIView(RetrieveAPIView):
+	queryset = Location.objects.all()
+	serializer_class = LocationSerializer
+	permission_classes = [IsAuthenticated]
+	throttle_classes = (UserRateThrottle,)	
+
+class LocationCreateAPIView(CreateAPIView):
+	queryset = Location.objects.all()
+	serializer_class = LocationCreateSerializer
+	permission_classes = [IsAuthenticated]
+	throttle_classes = (UserRateThrottle,)	
+	def perform_create(self, serializer):
+		geolocator = GoogleV3(api_key="AIzaSyBO2lWgBphsJzNOfFxsJHgtuJ9zQoE7zTU")
+		geocoded = geolocator.geocode(serializer.validated_data.get('address') + ' Seattle WA USA 98105')
+		if geocoded.address == 'Seattle, WA 98105, USA':
+			raise ValidationError(_('Address is invalid or does not exist. Remember this address should not inlcude city, state, country or zip code.'))
+		serializer.save(address=geocoded.address, lat=geocoded.latitude, lon=geocoded.longitude)
+class UserInfoDetailAPIView(RetrieveAPIView):
+	queryset = UserInfo.objects.all()
+	serializer_class = UserInfoSerializer
+	permission_classes = [IsAuthenticated]
+	throttle_classes = (UserRateThrottle,)
+	lookup_field = 'user__username'
+class UserInfoUpdateAPIView(RetrieveUpdateAPIView):
+	queryset = UserInfo.objects.all()
+	serializer_class = UserInfoUpdateSerializer
+	permission_classes = [IsAuthenticated, IsOwnerOrReadOnlyUserInfo]
+	throttle_classes = (UserRateThrottle,)
+	lookup_field = 'user__username'
