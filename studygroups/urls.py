@@ -13,7 +13,7 @@ urlpatterns = [
 	url(r'^active/manage/(?P<pk>[0-9]+)/$', views.manage, name="manage"),
 	url(r'^active/manage/(?P<pk>[0-9]+)/delete/$', views.delete, name="delete"),
 	url(r'^load_locations/$', views.load_locations),
-	url(r'^add_or_edit/new_location/$', views.new_location),
+	url(r'^new_location/$', views.new_location),
 	url(r'^signup/$', views.UserFormView.as_view(), name="signup"),
 	url(r'^signup/submit/$', views.signup_submit, name="signup_submit"),
 	url(r'^profile/(?P<username>[-\w\d]+)/$', views.profile, name='profile'),

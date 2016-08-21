@@ -13,10 +13,11 @@ from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView
 from .forms import UserForm
-#import geopy
-#from geopy.geocoders import GoogleV3
+import geopy
+from django.core.exceptions import ValidationError
+from geopy.geocoders import GoogleV3
 from django.contrib.auth.forms import UserCreationForm
-
+from django.utils.translation import ugettext as _
 
 #class StudGroupListView(generic.ListView):
 #	template_name = 'studygroups/index.html'
@@ -36,8 +37,7 @@ def search_studygroups(request):
 		search_text = request.POST['search_text']
 	else:
 		search_text = ''
-	studygroups = StudyGroup.objects.filter(course_code=search_text).filter(end_time__gte=datetime.now())
-	
+	studygroups = StudyGroup.objects.filter(course_code=search_text).filter(end_time__gte=datetime.now())	
 	return render(request, 'studygroups/studygroups_search.html', {'studygroups' : studygroups})
 
 def load_courses(request):
@@ -53,28 +53,14 @@ def add(request):
 	return render(request, 'studygroups/add_or_edit.html')
 def submit_add(request):
 	studygroup = StudyGroup()
-	studygroup.name = request.POST['name']
-	studygroup.course_code = request.POST['course']
-	studygroup.location = Location.objects.filter(name = request.POST['location'])[0]
-	studygroup.description = request.POST['description']
-	if not 'now' in request.POST:
-		studygroup.start_time = request.POST['startdate'] + ' ' + request.POST['starttime']
-	studygroup.end_time = request.POST['enddate'] + ' ' + request.POST['endtime']
-	studygroup.manager = request.user
-	studygroup.save()
+	submit_studygroup(request, studygroup)
 	return HttpResponseRedirect('/active/manage/%s' % studygroup.pk)
 def edit(request, pk):
 	studygroup = get_object_or_404(StudyGroup, pk=pk)
 	return render(request, 'studygroups/add_or_edit.html', {'studygroup' : studygroup})
 def submit_edit(request, pk):
 	studygroup = get_object_or_404(StudyGroup, pk=pk)
-	studygroup.name = request.POST['name']	
-	studygroup.course_code = request.POST['course']
-	studygroup.location = Location.objects.filter(name = request.POST['location'])[0]
-	studygroup.description = request.POST['description']
-	studygroup.end_time = request.POST['enddate'] + ' ' + request.POST['endtime']
-	studygroup.manager = request.user
-	studygroup.save()
+	submit_studygroup(request, studygroup)
 	return HttpResponseRedirect('/active/manage/%s' % pk)
 def load_locations(request):
 	locations = Location.objects.values_list('name', flat=True)
@@ -86,13 +72,15 @@ def new_location(request):
 	if request.method == "POST":
 		location = Location()
 		location.name = request.POST['new_location_name']
-		location.address = request.POST['new_location_address']
-	#	geolocator = GoogleV3(api_key="AIzaSyBO2lWgBphsJzNOfFxsJHgtuJ9zQoE7zTU")
-	#	geocode = geolocator(request.POST['new_location_address'] + ' Seattle WA USA')
-	#	location.lat = geocode.latitude
-	#	location.lon = geocode.longitude
-	#	location.save()
-	#	print(location.address + ' ' location.lat + ' ' + location.lon + ' ' geocode.address
+		geolocator = GoogleV3(api_key="AIzaSyBO2lWgBphsJzNOfFxsJHgtuJ9zQoE7zTU")
+		geocoded = geolocator.geocode(request.POST['new_location_address'] + ' Seattle WA USA 98105')
+		if geocoded.address == 'Seattle, WA 98105, USA':
+			raise ValidationError(_('Address is invalid or does not exist. Remember this address should not inlcude city, state, country or zip code.'))
+		location.lat = geocoded.latitude
+		location.lon = geocoded.longitude
+		location.address = geocoded.address
+		location.full_clean()
+		location.save()
 	locations = Location.objects.values_list('name', flat=True)
 	return render(request, 'studygroups/locations.html', {'locations' : locations})
 def delete(request, pk):
@@ -144,6 +132,7 @@ class UserFormView(View):
 			user.save()
 			profile = UserInfo()
 			profile.user = user
+			profile.email_public = user.email
 			profile.save()
 			user = authenticate(username=username, password=password)
 			if user is not None:
@@ -152,7 +141,7 @@ class UserFormView(View):
 					return redirect('index')
 		return render(request, self.template_name, {'form': form})
 
-@login_required(login_url='/login/')
+@login_required(login_url='login/')
 def edit_profile(request):
 	return render(request, 'studygroups/edit_profile.html', {'profile' : UserInfo.objects.filter(user=request.user)[0]})
 
@@ -162,7 +151,10 @@ def submit_edit_profile(request):
 	profile.last_name = request.POST['last_name']
 	profile.email_public = request.POST['email']
 	profile.phone_number = request.POST['phone']
-	profile.year = request.POST['year']
+	if request.POST['year'] != "":
+		profile.year = request.POST['year']
+		if profile.year != "Freshman" and profile.year != "Sophmore" and profile.year != "Junior" and profile.year != "Senior" and profile.year != "Beyond Senior":
+			raise ValidationError(_('Invalid year: Only "Freshman", "Sophmore", "Junior", "Senior", and "Beyond Senior" are valid options'))
 	profile.major = request.POST['major']
 	profile.minor = request.POST['minor']
 	profile.bio = request.POST['about']
@@ -170,5 +162,27 @@ def submit_edit_profile(request):
 	profile.ideal_study_group = request.POST['ideal']
 	if 'image' in request.FILES:
 		profile.profile_pic = request.FILES['image']
+	profile.full_clean()
 	profile.save()
 	return HttpResponseRedirect('/my_profile/')
+
+def submit_studygroup(request, studygroup):
+	print(request.POST['startdate'])
+	print(datetime.strptime(request.POST['startdate'] + ' ' + request.POST['starttime'], '%Y-%m-%d %H:%M'))
+	studygroup.name = request.POST['name']
+	studygroup.course_code = request.POST['course']
+	studygroup.location = Location.objects.filter(name = request.POST['location'])[0]
+	studygroup.description = request.POST['description']
+	print(request.POST['startdate'] + ' ' + request.POST['starttime'])
+	if not 'now' in request.POST:
+		studygroup.start_time = request.POST['startdate'] + ' ' + request.POST['starttime']
+	studygroup.end_time = request.POST['enddate'] + ' ' + request.POST['endtime']
+	if studygroup.end_time < studygroup.start_time: 
+		raise ValidationError(_('Your end date is sooner than your start date!'))
+	elif studygroup.start_time < str(datetime.now()):
+		raise ValidationError(_('Your starting date is in the past. You are not a time traveler!'))
+	elif (datetime.strptime(studygroup.end_time, '%Y-%m-%d %H:%M')-datetime.strptime(studygroup.start_time, '%Y-%m-%d %H:%M')).total_seconds() > 86400: 
+		raise ValidationError(_('Your studygroup can not last for more than 24 hours'))
+	studygroup.manager = request.user
+	studygroup.full_clean()
+	studygroup.save()

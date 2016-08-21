@@ -27,6 +27,22 @@
 		var end_time = "{{ studygroup.end_time.time|time:"H:i"}}";
 		$('#endtime').val(end_time);
 		{% endif %}	
+		$('select').change(function(){
+			console.log("1");
+			var id = $(this).find("option:selected").attr("id");
+			switch (id){
+				case "other":
+					console.log("2");
+					$('#newlocation_div').show()
+					break;
+				default:
+					$('#newlocation_div').hide()
+					break;
+			}
+		});
+		$('#newlocation').click( function(){
+			$('#newlocation_div').hide();
+		});
 	});
 	$(document).ready(function(){
 		$('.add-address-field').hide();
@@ -91,6 +107,9 @@
 				<div class="col-md-4 center-block add-address-field" style="float: none;">
 				<br/>
 					<p>Please enter a name for the location along with an address</p>
+			<div id="newlocation_div" class="row" style="display:none;">
+				<div class="col-md-4 center-block" style="float: none;">
+					<legend>Add a Location</legend>
 					{% csrf_token %}
 					<label for="location_name" class="control-label">Name</label>
 					<input id="location_name" name="new_location_name" class="form-control">

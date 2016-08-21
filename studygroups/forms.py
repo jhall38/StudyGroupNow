@@ -9,3 +9,7 @@ class UserForm(forms.ModelForm):
 		model = User
 		fields = {'email', 'username', 'password'}
 		fields_order = ['username', 'email', 'password']
+#class StudyGroupForm(forms.ModelForm):
+#	name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of Studygroup'})
+	
+	
