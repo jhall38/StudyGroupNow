@@ -10,21 +10,21 @@
 
 {% block body %}
 <script type="text/javascript">
-  /*  $(document).ready(function(){
-    $("#search_courses").click(function(){S
-        var course = document.getElementById("search");
-        var regex = /^[A-Z]{3,4}\s\d{2,4}[A-Z]{0,1}$/i;
-        if (course.value == null || course.value == "" || course.value.search(regex) == -1){
-            //$("#googleMap").html("Please enter a valid class or course name!");
-            document.getElementById("errors").innerHTML = "Please enter a valid class or course name!";
-            alert("click")
-            $(".errors").show();
-            $(".grey-box").hide();
-        } else {
-            $(".grey-box").show();
-        }
+    $(document).ready(function(){
+        $("#search_courses").click(function(){
+            var course = document.getElementById("search");
+            var regex = /^[A-Z]{3,4}\s\d{2,4}[A-Z]{0,1}$/i;
+            if (course.value == null || course.value == "" || course.value.search(regex) == -1){
+                $(".grey-box").hide();
+                $("#errors").show();
+                document.getElementById("errors").innerHTML = "Invalid class or course name!";
+            } else {
+                $('.grey-box').show();
+                document.getElementById("errors").innerHTML = "";
+                $("#errors").hide();
+            }
+        });
     });
-});*/
 </script>
 
     <div class="container">
@@ -32,7 +32,7 @@
             <div class="white-box"></div>
             <div class="col-md-8 split-display">
                 <div>
-                    <div class="col-md-4">
+                    <div>
                         <ul class="searchbar">
                             <li><input id="search" list="classes" name="searchclass" placeholder="Search classes" class="form-control input-md search-input"></li>
                             <li><button id="search_courses" type="submit" name="search" value="search" class="btn btn-info">Search</button></li>
@@ -41,12 +41,12 @@
                         </ul>
                     </div>
                 </div>
-                <div class="errors">Please enter a valid a class or course!</div>
-                    <div id="googleMap"></div>
+                <div id="errors"></div>
+                <div id="googleMap"></div>
             </div>
             <div class="col-md-4 split-display">
-		{% csrf_token %}
-		<div id="results" class="grey-box">
+                {% csrf_token %}
+                <div id="results" class="grey-box">
             </div>
         </div>
     </div>
