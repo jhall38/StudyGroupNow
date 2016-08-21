@@ -21,6 +21,7 @@ $(function(){
 				'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
 			},
 			success: newLocationSuccess,
+			error: newLocationFail,
 			dataType: 'html'
 		});
 	});
@@ -44,4 +45,7 @@ function newLocationSuccess(data, textStatus, jqXHR){
 	$('#locations').html(data);
 	$('#locations').val($('#location_name').val());
 }
-
+function newLocationFail(data, textStatus, jqXHR, thrownError){
+	alert("Address is invalid or does not exist. Remember this address should not inlcude city, state, country or zip code.");
+	$('#newlocation_div').show();
+}
