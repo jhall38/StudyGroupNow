@@ -23,6 +23,10 @@
     font-weight: bold;
 }
 
+/*.search-input {
+    display: inline !important;
+    } */
+
 .grey-box {
     background-color: #CCCCCC;
     padding-left: 10px;
@@ -97,6 +101,10 @@
     #errors {
         margin-top: 80px;
     }
+
+    .search-input {
+        width: 320px;
+    }
 }
 
 /* Tablet and larger phone screen*/
@@ -113,6 +121,10 @@
 
     #errors {
         margin-top: 80px;
+    }
+
+    .search-input {
+        width: 400px;
     }
 }
 
@@ -131,8 +143,7 @@
     }
 
     .search-input {
-        width: 570px;
-        float: left;
+        width: 500px;
     }
 }
 
@@ -144,7 +155,7 @@
     }
 
     .search-input {
-        width: 700px;
+        width: 650px;
     }
 
     .grey-box {

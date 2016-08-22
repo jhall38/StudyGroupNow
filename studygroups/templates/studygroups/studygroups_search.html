@@ -25,9 +25,12 @@
 			url: "http://maps.google.com/maps?daddr=" + lat + "," + lon
 		});
 		google.maps.event.addListener(marker, 'click', function() {
-			window.location.href = this.url
+			window.open(this.url,'_blank');
 		});
 		{% endfor %}
+		$('.cell').each(function(i) {
+			$(this).delay((i++) * 100).fadeTo(200, 1);
+		});
 }
 initialize();
 $(document).ready(function(){
@@ -40,7 +43,7 @@ $(document).ready(function(){
 </script>
 <div style="padding-top:10px;">Search results</div>
 {% for studygroup in studygroups %}
-    <div>
+    <div class="cell">
         <hr/>
         <div><b>{{ forloop.counter }}.</b> {{studygroup.name}}</div>
         <div><b>Creator:</b><a href="{% url 'profile' studygroup.manager.username %}" target="_blank"> {{studygroup.manager.username}}</a></div>
@@ -55,6 +58,7 @@ $(document).ready(function(){
             <div><b>Start time:</b> {{studygroup.start_time}}</div>
             <div><b>End time:</b> {{studygroup.end_time}}</div>
             <span class="toggle-show">Show details</span>
+            <!-- <span class="toggle-show">Show details</span> -->
         </div>
     </div>
 {% endfor %}
