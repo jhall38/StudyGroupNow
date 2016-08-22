@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.template import Template, RequestContext
@@ -30,7 +31,7 @@ from rest_framework.permissions import(
 	)
 from .permissions import IsOwnerOrReadOnlyStudyGroup, IsOwnerOrReadOnlyUserInfo
 
-@login_required(login_url='login/')
+@login_required(login_url='/studygroupnow/login/')
 def index(request):
 	if not StudyGroup.objects.filter(manager=request.user).exists():
 		return render(request, 'studygroups/index.html', {'active_studygroup' : False})
@@ -61,7 +62,7 @@ def add(request):
 def submit_add(request):
 	studygroup = StudyGroup()
 	submit_studygroup(request, studygroup)
-	return HttpResponseRedirect('/active/manage/%s' % studygroup.pk)
+	return HttpResponseRedirect(reverse('manage', args=[studygroup.pk]))
 def edit(request, pk):
 	studygroup = get_object_or_404(StudyGroup, pk=pk)
 	studygroup.start_time = studygroup.start_time + timedelta(hours=-7)
@@ -70,7 +71,7 @@ def edit(request, pk):
 def submit_edit(request, pk):
 	studygroup = get_object_or_404(StudyGroup, pk=pk)
 	submit_studygroup(request, studygroup)
-	return HttpResponseRedirect('/active/manage/%s' % pk)
+	return HttpResponseRedirect(reverse('manage', args=[studygroup.pk]))
 def load_locations(request):
 	locations = Location.objects.values_list('name', flat=True)
 	if StudyGroup.objects.filter(manager=request.user).exists():
@@ -97,7 +98,7 @@ def delete(request, pk):
 	if studygroup.manager.pk is not request.user.pk:
 		return HttpResponseForbidden()
 	studygroup.delete()
-	return HttpResponseRedirect('/active/')
+	return HttpResponseRedirect(reverse('active_groups'))
 def signup(request):
 	return render(request, 'studygroups/signup.html')
 def signup_submit(request):
@@ -116,8 +117,6 @@ def edit_profile(request):
 @login_required(login_url='login/')
 def profile(request, username):
 	this_user = get_object_or_404(User, username=username)
-	print(this_user.username)
-	print(UserInfo.objects.filter(user__username=this_user.username))
 	this_profile = get_object_or_404(UserInfo, user=this_user.id)
 	return render(request, 'studygroups/profile.html', {'this_profile' : this_profile})
 
@@ -131,9 +130,7 @@ class UserFormView(View):
 
 	def post(self, request):
 		form = self.form_class(request.POST)
-		print(form)
 		if form.is_valid():
-			print("test")
 			user = form.save(commit=False)
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password']
@@ -173,24 +170,21 @@ def submit_edit_profile(request):
 		profile.profile_pic = request.FILES['image']
 	profile.full_clean()
 	profile.save()
-	return HttpResponseRedirect('/my_profile/')
+	return HttpResponseRedirect(reverse('my_profile'))
 
 def submit_studygroup(request, studygroup):
-	print(request.POST['startdate'])
-	print(datetime.strptime(request.POST['startdate'] + ' ' + request.POST['starttime'], '%Y-%m-%d %H:%M'))
 	studygroup.name = request.POST['name']
 	studygroup.course_code = request.POST['course']
 	studygroup.location = Location.objects.filter(name = request.POST['location'])[0]
 	studygroup.description = request.POST['description']
-	print(request.POST['startdate'] + ' ' + request.POST['starttime'])
 	if not 'now' in request.POST:
 		studygroup.start_time = request.POST['startdate'] + ' ' + request.POST['starttime']
 	studygroup.end_time = request.POST['enddate'] + ' ' + request.POST['endtime']
-	if studygroup.end_time < studygroup.start_time: 
+	if str(studygroup.end_time) < str(studygroup.start_time): 
 		raise ValidationError(_('Your end date is sooner than your start date!'))
-	elif studygroup.start_time < str(datetime.now()):
+	elif str(studygroup.start_time) < str(datetime.now()):
 		raise ValidationError(_('Your starting date is in the past. You are not a time traveler!'))
-	elif (datetime.strptime(studygroup.end_time, '%Y-%m-%d %H:%M')-datetime.strptime(studygroup.start_time, '%Y-%m-%d %H:%M')).total_seconds() > 86400: 
+	elif not 'now' in request.POST and (datetime.strptime(studygroup.end_time, '%Y-%m-%d %H:%M')-datetime.strptime(studygroup.start_time, '%Y-%m-%d %H:%M')).total_seconds() > 86400: 
 		raise ValidationError(_('Your studygroup can not last for more than 24 hours'))
 	studygroup.manager = request.user
 	studygroup.full_clean()
@@ -224,8 +218,8 @@ class StudyGroupCreateAPIView(CreateAPIView):
 	def perform_create(self, serializer):
 		if serializer.validated_data.get('end_time') < serializer.validated_data.get('start_time'): 
 			raise ValidationError(_('Your end date is sooner than your start date!'))
-		elif serializer.validated_data.get('start_time') < timezone.now():
-			raise ValidationError(_('Your starting date is in the past. You are not a time traveler!'))
+		#elif serializer.validated_data.get('start_time') < timezone.now():
+		#	raise ValidationError(_('Your starting date is in the past. You are not a time traveler!'))
 		elif (serializer.validated_data.get('end_time')-serializer.validated_data.get('start_time')).total_seconds() > 86400: 
 			raise ValidationError(_('Your studygroup can not last for more than 24 hours'))
 		if Location.objects.get(pk=serializer.validated_data.get('location_id')):			

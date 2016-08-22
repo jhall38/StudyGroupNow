@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', views.login, name='login'),
-    url(r'^logout/$', views.logout, name='logout', kwargs={'next_page': '/'}),
+    url(r'^logout/$', views.logout, name='logout', kwargs={'next_page': '/studygroupnow/'}),
     url(r'', include('studygroups.urls')),
     url(r'^accounts/login/$', views.login, name='login'),
 ]
