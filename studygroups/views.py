@@ -8,7 +8,6 @@ from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseForbidden
 from django import forms
-from ratelimit.decorators import ratelimit
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView
