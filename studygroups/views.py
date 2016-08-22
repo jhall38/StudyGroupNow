@@ -13,6 +13,7 @@ from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView
 from django.utils import timezone
 from .forms import UserForm
+from datetime import datetime, timedelta
 import geopy
 from django.core.exceptions import ValidationError
 from geopy.geocoders import GoogleV3
@@ -49,6 +50,8 @@ def load_courses(request):
 	return render(request, 'studygroups/course_codes.html', {'course_codes' : course_codes})
 def manage(request, pk):
 	studygroup = get_object_or_404(StudyGroup, pk=pk)
+	studygroup.start_time = studygroup.start_time + timedelta(hours=-7)
+	studygroup.end_time = studygroup.end_time + timedelta(hours=-7)
 	return render(request, 'studygroups/manage.html', {'studygroup' : studygroup})
 def active(request):
 	active_groups = StudyGroup.objects.filter(manager=request.user)
@@ -61,6 +64,8 @@ def submit_add(request):
 	return HttpResponseRedirect('/active/manage/%s' % studygroup.pk)
 def edit(request, pk):
 	studygroup = get_object_or_404(StudyGroup, pk=pk)
+	studygroup.start_time = studygroup.start_time + timedelta(hours=-7)
+	studygroup.end_time = studygroup.end_time + timedelta(hours=-7)
 	return render(request, 'studygroups/add_or_edit.html', {'studygroup' : studygroup})
 def submit_edit(request, pk):
 	studygroup = get_object_or_404(StudyGroup, pk=pk)
